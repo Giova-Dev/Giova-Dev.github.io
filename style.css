@@ -1,0 +1,12 @@
+h1{
+    text-align: center;
+    background-color: #15a1ff;
+    border-radius: 2%;
+}
+body{
+    text-justify: auto;
+}
+#work{
+    color: #ff0000;
+    text-decoration: underline #ff0000;
+}
