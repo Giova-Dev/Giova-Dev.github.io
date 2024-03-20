@@ -1,0 +1,53 @@
+/* general */
+h1{
+    text-align: center;
+    background-color: #15a1ff;
+    border-radius: 2%;
+    border: 0.1em solid black;
+    padding: 1px;
+    max-width: fit-content;
+    margin: 25px 35%;
+}
+body{
+    text-justify: auto;
+    background-color: #0b003b;
+}
+
+/* classes */
+.link{
+    border: 1px rgb(0, 0, 0);
+    flex: 1;
+    text-align: center;
+    margin-left: 5%;
+    margin-right: 5%;
+    text-decoration: none;
+    color: #00cccc;
+}
+
+/* main component in class/id */
+#main p {
+    color: white;
+}
+
+/* id */
+#main {
+    padding: 1px;
+    border: 00.1em solid whitesmoke;
+    max-width: fit-content;
+    margin: 15px 20%;
+    text-align: center;
+}
+
+#work{
+    color: #ff0000;
+    text-decoration: underline #ff0000;
+}
+
+#main-links {
+    border: 1px solid rgb(189, 185, 185);
+    box-shadow: 0 2px 4px #000000;
+    display: flex;
+    margin: 25px 40%;
+}
+
+
