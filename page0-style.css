@@ -5,7 +5,6 @@ h1{
     border-radius: 2%;
     border: 0.1em solid black;
     padding: 1px;
-    max-width: fit-content;
     margin: 25px 35%;
 }
 body{
@@ -28,7 +27,6 @@ body{
 #main {
     padding: 1px;
     border: 00.1em whitesmoke;
-    max-width: fit-content;
     margin: 15px 5%;
     text-align: center;
 }
