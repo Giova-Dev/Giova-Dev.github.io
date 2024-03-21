@@ -1,8 +1,8 @@
 /* general */
 h1{
     text-align: center;
-    background-color: #15a1ff;
-    border-radius: 2%;
+    background-color: pink;
+    border-radius: 5%;
     border: 0.1em solid black;
     padding: 1px;
     margin: 25px 35%;
@@ -50,6 +50,12 @@ body{
 
 .content1 {
     grid-column: 1 / span 1;
+    background-color: white;
+}
+
+.content1 p{
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 .content2 {
@@ -60,7 +66,13 @@ body{
     grid-column: 3 / span 1;
 }
 
+.content3 p{
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
 .container p {
-    word-wrap: break-word; /* Permette al testo di andare a capo quando supera la larghezza della colonna */
+    word-wrap: break-word;
     color: white;
+    text-align: justify;
 }
