@@ -24,17 +24,8 @@ body{
 }
 
 /* main component in class/id */
-#main p {
-    color: white;
-}
 
 /* id */
-#main {
-    padding: 1px;
-    border: 00.1em solid whitesmoke;
-    margin: 15px 20%;
-    text-align: center;
-}
 
 #main-links {
     border: 1px solid rgb(189, 185, 185);
@@ -44,3 +35,32 @@ body{
 }
 
 
+/* CHAT-GPT */
+.container {
+    display: grid;
+    grid-template-columns: 25% 40% 25%;
+    grid-gap: 5%;
+}
+
+.column {
+    background-color: lightgray;
+    text-align: center;
+    font-size: 18pt;
+}
+
+.content1 {
+    grid-column: 1 / span 1;
+}
+
+.content2 {
+    grid-column: 2 / span 1;
+}
+
+.content3 {
+    grid-column: 3 / span 1;
+}
+
+.container p {
+    word-wrap: break-word; /* Permette al testo di andare a capo quando supera la larghezza della colonna */
+    color: white;
+}
