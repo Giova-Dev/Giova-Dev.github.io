@@ -163,10 +163,11 @@
             var vett = [];
             var gameEnded = true;
             var timer = 3;
-            var record;
+            var record = 0;
+            var curr_record = 0;
 
             document.getElementById("myForm").addEventListener("submit", function() {
-                record = 0;
+                curr_record = 0;
                 event.preventDefault();
                 celle = [];
                 vett = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -209,13 +210,19 @@
 
             function error(){
                 gameEnded = true;
-                document.getElementById("record").textContent = record;
+                if(record < curr_record){
+                    document.getElementById("record").textContent = curr_record;
+                    record = curr_record;
+                }
             };
 
             function victory(){
                 gameEnded = true;
-                document.getElementById("record").textContent = record;
-            }
+                if(record < curr_record){
+                    document.getElementById("record").textContent = curr_record;
+                    record = curr_record;
+                }
+            };
 
             function input(n){
                 if(gameEnded == false && document.getElementById("cella" + n).className != "correct"){
@@ -224,7 +231,7 @@
                         current_cell = document.getElementById("cella" + n);
                         current_cell.className = "correct";
                         vett.shift();
-                        record++;
+                        curr_record++;
                         if(record == 9)
                             victory();
                     }
