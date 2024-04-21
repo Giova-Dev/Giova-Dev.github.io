@@ -1,50 +1,242 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="author" content="Giova-Dev">
-    <link rel="stylesheet" href="page1-style.css">
-<!--   <meta name="viewport" content="width=device-width" /> -->
-    <title>ASCII Art</title>
-</head>
-<body>
-    <header>
-        <h1>Contenuto della pagina 1</h1>
-        <nav id="main-links">
-            <a class="link" href="index.html">Home</a>
-        </nav>
-    </header>
-    <div class="container">
-        <div class="column">LEFT</div>
-        <div class="column">MAIN</div>
-        <div class="column">RIGHT</div>
-        <div class="content1">
-            <p>
-                T Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
-            </p>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <title>Esercizio d'esame</title>
+
+        <style>
+            table {
+                border-collapse: collapse;
+                border: 5px solid black;
+                margin: 30px 30px;
+            }
+            td {
+                background-color: white;
+                height: 80px;
+                width: 80px;
+                border: 1px solid;
+                text-align: center;
+                font-size: 32px;
+            }
+            #start {
+                background-color: whitesmoke;
+                font: bold;
+                padding: 15px 15px;
+                font-size: 36px;
+            }
+            .box {
+                border: 0px;
+                background-color: white;
+                font-size: 32px;
+                width: 100%;
+                height: 100%;
+                margin-top: 1px;
+                vertical-align: middle;
+            }
+            .correct {
+                border: 0px;
+                background-color: green;
+                font-size: 32px;
+                width: 100%;
+                height: 100%;
+                margin-top: 1px;
+                vertical-align: middle;
+            }
+            .error {
+                border: 0px;
+                background-color: red;
+                font-size: 32px;
+                width: 100%;
+                height: 100%;
+                margin-top: 1px;
+                vertical-align: middle;
+            }
+            #record {
+                display: inline-block;
+                font-style: bold;
+            }
+            #container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            /* OLD STYLE */
+            h1{
+                text-align: center;
+                background-color: #15a1ff;
+                border-radius: 2%;
+                border: 0.1em solid black;
+                padding: 1px;
+                margin: 25px 35%;
+            }
+            .link{
+                border: 1px rgb(0, 0, 0);
+                flex: 1;
+                text-align: center;
+                margin-left: 5%;
+                margin-right: 5%;
+                text-decoration: none;
+                color: black;
+            }
+            #main-links {
+                border: 1px solid rgb(189, 185, 185);
+                box-shadow: 0 2px 4px #000000;
+                display: flex;
+                margin: 25px 40%;
+            }
+        </style>
+    </head>
+    <body style="background-color: #ff00ff;">
+        <header>
+            <h1>Interactable Page</h1>
+            <nav id="main-links">
+                <a class="link" href="index.html">Home</a>
+            </nav>
+        </header>
+        <div id="container">
+            <table id="tabella">
+                <tr>
+                    <td>
+                        <button onclick="input(1)" class="box" id="cella1">
+                            
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="input(2)" class="box" id="cella2">
+                        
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="input(3)" class="box" id="cella3">
+                        
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button onclick="input(4)" class="box" id="cella4">
+    
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="input(5)" class="box" id="cella5">
+                        
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="input(6)" class="box" id="cella6">
+                        
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button onclick="input(7)" class="box" id="cella7">
+    
+                        </button>                
+                    </td>
+                    <td>
+                        <button onclick="input(8)" class="box" id="cella8">
+                        
+                        </button>             
+                    </td>
+                    <td>
+                        <button onclick="input(9)" class="box" id="cella9">
+                        
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <form id="myForm">
+            <button type="submit" id="start">Avvia</button>
+            </form>
+            <div id style="margin: 40px; font-size:36px;">
+                Il tuo record è <div id="record"></div>
+            </div>
         </div>
-        <div class="content2">
-            <p>
-                T Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
-            </p>
-        </div> 
-        <div class="content3">
-            <p>
-                T Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...
-            </p>
-        </div>                                                                                                                                                                                                                                                                            
-    </div>
-</body>
+        
+
+        <script>
+            var celle = [];
+            var vett = [];
+            var gameEnded = true;
+            var timer = 3;
+            var record;
+
+            document.getElementById("myForm").addEventListener("submit", function() {
+                record = 0;
+                event.preventDefault();
+                celle = [];
+                vett = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+                generaVettore();
+                stampaVettore();
+            });
+
+            function generaVettore() {
+                var numeri = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+                var i = 1;
+
+                while (numeri.length > 0) {
+                    var indiceCasuale = Math.floor(Math.random() * numeri.length);
+                    var numeroCasuale = numeri.splice(indiceCasuale, 1)[0];
+                    celle.push(numeroCasuale);
+                    vett[numeroCasuale] = i++; 
+                }
+            };
+
+            function stampaVettore(){
+                for(var i = 0; i < 9; i++){
+                    var cella = document.getElementById("cella" + (i + 1));
+                    cella.textContent = celle[i];
+                    cella.className = "box";
+                }
+
+
+                function startTimer(durationInSeconds) {
+                    setTimeout(function() {
+                        for(var i = 0; i < 9; i++){
+                            var cella = document.getElementById("cella" + (i + 1));
+                            cella.textContent = null;
+                        }
+                        gameEnded = false;
+                    }, durationInSeconds * 1000); // Converti i secondi in millisecondi
+                }
+
+                startTimer(timer);
+            };
+
+            function error(){
+                gameEnded = true;
+                document.getElementById("record").textContent = record;
+            };
+
+            function victory(){
+                gameEnded = true;
+                document.getElementById("record").textContent = record;
+            }
+
+            function input(n){
+                if(gameEnded == false && document.getElementById("cella" + n).className != "correct"){
+                    if(vett[1] == n){
+                        var current_cell;
+                        current_cell = document.getElementById("cella" + n);
+                        current_cell.className = "correct";
+                        vett.shift();
+                        record++;
+                        if(record == 9)
+                            victory();
+                    }
+                    else{
+                        var current_cell;
+                        current_cell = document.getElementById("cella" + n);
+                        current_cell.className = "error";
+                        error();
+                    }
+                }
+            };
+            
+        </script>
+    </body>
 </html>
