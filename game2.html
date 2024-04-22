@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+    <head>
+        <meta charset="UTF-8">
+        <title>Exam Simulation</title>
+
+        <style>
+            body {
+                background-color: rgb(92, 92, 92);
+            }
+            #container{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            #mainTable{
+                background-color: white;
+                border-collapse: collapse;
+                border: 1px solid black;
+                margin-top: 50px;
+                margin-bottom: 100px;
+            }
+            thead{
+                background-color: aqua;
+            }
+            th, td {
+                border:  1px solid black;
+                width: 45px;
+                height: 45px;
+                text-align: center;
+                vertical-align:middle;
+                font-style: bold;
+            }
+            button{
+                padding: 10px;
+                font-size: 24px;
+            }
+
+            /* OLD STYLE */
+            h1{
+                text-align: center;
+                background-color: #15a1ff;
+                border-radius: 2%;
+                border: 0.1em solid black;
+                padding: 1px;
+                margin: 25px 35%;
+            }
+            .link{
+                border: 1px rgb(0, 0, 0);
+                flex: 1;
+                text-align: center;
+                margin-left: 5%;
+                margin-right: 5%;
+                text-decoration: none;
+                color: black;
+            }
+            #main-links {
+                border: 1px solid rgb(189, 185, 185);
+                box-shadow: 0 2px 4px #000000;
+                display: flex;
+                margin: 25px 40%;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Interactable Page</h1>
+            <nav id="main-links">
+                <a class="link" href="index.html">Home</a>
+            </nav>
+        </header>
+        <div id="container">
+            <table id="mainTable">
+                <thead>
+                    <th class="sky">
+                        
+                    </th>
+                    <th class="sky">
+                        
+                    </th>
+                    <th class="sky">
+                        
+                    </th>
+                    <th class="sky">
+                        
+                    </th>
+                    <th class="sky">
+                        
+                    </th>
+                    <th class="sky">
+                        
+                    </th>
+                    <th class="sky">
+                        
+                    </th>
+                    <th class="sky">
+                        
+                    </th>
+                    <th class="sky">
+                        
+                    </th>
+                    <th class="sky">
+                        
+                    </th>
+                </thead>
+                <tr>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                    <td class="box">
+                        
+                    </td>
+                </tr>
+            </table>
+            <form>
+                <button type="button" id="start">AVVIA</button>
+            </form>
+            <div id="debug" style="margin: 30px;">
+                
+            </div>
+        </div>
+
+        <script>
+            var currPos = 0;
+            var skybox;
+            var celle;
+            var gameEnded = true;
+            var intervalID = 0;
+            var points = 0;
+
+            document.getElementById("start").addEventListener("click", function(event) {
+                gameEnded = true;
+                clearInterval(intervalID);
+                document.getElementById("start").disabled = true;
+                reset();
+                start();
+            });
+
+            function reset(){
+                skybox = document.getElementsByClassName("sky");
+                celle = document.getElementsByClassName("box");
+                for(var i = 0; i < skybox.length; i++){
+                    skybox[i].textContent = null;
+                }
+                for(var i = 0; i < celle.length; i++){
+                    celle[i].textContent = null;
+                }
+                points = 0;
+            };
+
+            function start(){
+                var pos = myRand(0, 9);
+                var dir = myRand(0, 1);
+
+                gameEnded = false;
+
+                skybox[pos].textContent = "X";
+
+                if(dir == 0)
+                    right(pos);
+                else
+                    left(pos);
+            }
+
+            function right(init){
+                intervalID = setInterval(function (){
+                    skybox[init++].textContent = null;
+                    if(init >= 10)
+                        init = 0;
+                    skybox[init].textContent = "X";
+                    currPos = init;
+                }, 200);
+            }
+
+            function left(init){
+                intervalID = setInterval(function (){
+                    skybox[init--].textContent = null;
+                    if(init < 0)
+                        init = 9;
+                    skybox[init].textContent = "X";
+                    currPos = init;
+                }, 200);   
+            }
+
+            document.addEventListener("keydown", function(){
+                if(!gameEnded)
+                    drop(currPos);
+            });
+
+            function drop(pos){
+                celle = document.getElementsByClassName("box");
+                if(celle[pos].textContent == "X" && celle[pos] != null){
+                    endGame();
+                } else{
+                    celle[pos].textContent = "X";
+                    pos = pos +10;
+                    points++;
+                    if(points == 50)
+                        endGame();
+                    else{
+                        while(celle[pos].textContent != "X"){
+                            celle[pos].textContent = "X";
+                            celle[pos - 10].textContent = null;
+                            pos = pos + 10;
+                        }
+                    }
+                }
+            }
+
+            function endGame(){
+                gameEnded = true;
+                clearInterval(intervalID);
+                document.getElementById("debug").textContent = "PUNTEGGIO: " + points;
+                document.getElementById("start").disabled = false;
+            }
+
+            function myRand(min, max){
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+        </script>
+    </body>
+</html>
