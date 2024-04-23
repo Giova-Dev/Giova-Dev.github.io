@@ -334,10 +334,18 @@
                 }, 200);   
             }
 
+            //tastiera
             document.addEventListener("keydown", function(){
                 if(!gameEnded)
                     drop(currPos);
             });
+
+            // touch
+            document.getElementById('container').addEventListener('touchstart', function(event) {
+                event.preventDefault();
+                if(!gameEnded)
+                    drop(currPos);
+            }, false);
 
             function drop(pos){
                 celle = document.getElementsByClassName("box");
