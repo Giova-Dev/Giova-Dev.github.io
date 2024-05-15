@@ -1,0 +1,30 @@
+# aggiunto:
+#    if(numInterr == 1){
+#        numEscludi = [];
+#    }
+
+
+limite: 700, passi: 4, interruzioni: 4
+Riusciti: 10
+Media: 56.717171717171716
+Tentativi: 100
+
+limite: 700, passi: 5, interruzioni: 5
+Riusciti: 10
+Media: 61.38383838383838
+Tentativi: 100
+
+# aggiunto:
+#    if(numInterr == 2){
+#        numEscludi = [];
+#    }
+
+limite: 700, passi: 4, interruzioni: 4
+Riusciti: 4
+Media: 45.343434343434325
+Tentativi: 100
+
+limite: 700, passi: 5, interruzioni: 5
+Riusciti: 8
+Media: 49.78787878787879
+Tentativi: 100
