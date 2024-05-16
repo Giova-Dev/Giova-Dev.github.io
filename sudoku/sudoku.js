@@ -55,14 +55,9 @@ var tentativi = 0;
 function benchMark(){
     pulisciBenchMark();
     let tentativi = parseInt(prompt("Inserisci il numero di tentativi:"));
-    let limite = parseInt(prompt("Inserisci il limite:"));
-    let passi = parseInt(prompt("Inserisci il numero di passi:"));
-    let interruzioni = parseInt(prompt("Inserisci il numero di interruzioni:"));
     
     for(let i = 0; i < tentativi; i++)
-    start(limite, passi, interruzioni);
-    
-    document.getElementById("stats").textContent = "limite: " + limite + ', passi: ' + passi + ', interruzioni: ' + interruzioni;
+        start();
 }
 
 function pulisciBenchMark(){
@@ -73,7 +68,7 @@ function pulisciBenchMark(){
 }
 
 
-function start(DEBUG_lim, DEBUG_pass, DEBUG_int){
+function start(){
     
     pulisci();
     
@@ -85,25 +80,12 @@ function start(DEBUG_lim, DEBUG_pass, DEBUG_int){
     document.getElementById("media").textContent = "Media: "+ media;
     document.getElementById("tent").textContent = "Tentativi: "+ (++tentativi);
     
-    
-    let debugPassi = 0;
-    
     let td = document.querySelectorAll('#mainTable td');
     
     const def = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     
     while(i < 81){
         
-        if(debugPassi++ > DEBUG_lim){
-            console.log("\n LIMITE MASSIMO \n");
-            if(media == null){
-                media = i;
-            } else{
-                media = (media * (tentativi - 1) + 1 + i)/(tentativi);
-            }
-            return;
-        }
-
         let escludi = union(union(union(vec[Math.floor(i / 9)], myColContains(vec, i % 9)), microTable[myIndexToSubtable(i)]), numEscludi[Math.floor(i / 9)]);
         
         let aux = myArrayRand(substrac(def, escludi));
@@ -116,25 +98,17 @@ function start(DEBUG_lim, DEBUG_pass, DEBUG_int){
             
             i++;
             
-            numPassi++;
-            
-            if(numPassi > DEBUG_pass || numInterr > DEBUG_int){
-                numEscludi = Array.from({ length: 9 }, () => Array(9).fill(null));
-                numInterr = 0;
-            }
-            
-            // cambio riga
-            if(Math.floor(i / 9) != Math.floor((i + 1) / 9)){
-                numEscludi = Array.from({ length: 9 }, () => Array(9).fill(null));
-                numInterr = 0;
-            }
-            
-            console.log("i: ", i, ", numPassi: ", numPassi);            
         } else{
-            console.log("Passo indietro");
-            console.log("numEscludi: ", numEscludi[Math.floor(i / 9)]);
-            console.log("numInterr: ", numInterr);
-            passoIndietro(td, DEBUG_pass, DEBUG_int);
+            console.log("aux: ", aux, ", pos: ", i, "\nInizio passo indietro");
+            if(!passoIndietro(td)){
+                if(media == null){
+                    media = i;
+                } else{
+                    media = (media * (tentativi - 1) + 1 + i)/(tentativi);
+                }
+                start();
+                return;
+            };
         }
     }
     if(media == null){
@@ -146,9 +120,108 @@ function start(DEBUG_lim, DEBUG_pass, DEBUG_int){
     console.log(res);
 }
 
+function passoIndietro(td){
+    console.clear();
+    console.log("Passo indietro");
+    
+    const def = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    
+    let rowEmpty = true;
+    
+    let freezed = Array(9).fill(false);
+    let newCycle = true;
+    
+    let posVuota = i;
+    let escludi_start = union(union(myColContains(vec, i % 9), microTable[myIndexToSubtable(i)]), numEscludi[Math.floor(i / 9)]);
+    
+    let DEBUG_counter = 0;
+    
+    if(Math.floor(i / 9) == Math.floor((i + 1)/ 9)){
+        i++;
+    }
+    
+    while(rowEmpty && i > 0){
+        
+        DEBUG_counter++;
+        if(DEBUG_counter > 30){
+            return false;
+        }
+        
+        console.log("pos: ", i, "\n counter: ", DEBUG_counter);
+        
+        if(Math.floor(i / 9) == Math.floor(posVuota/ 9)){            // passo cella successiva, se rimango sulla stessa riga
+            
+            let mancanti = substrac(def, vec[Math.floor(i / 9)]);
+            
+            if(mancanti.length === 0){
+                console.log("Mancanti vuoto: ", mancanti);
+                rowEmpty = false;
+                break;
+            }
+            
+            // provo ad inserire i mancanti nella cella successiva
+            let escludi = union(union(myColContains(vec, i % 9), microTable[myIndexToSubtable(i)]), numEscludi[Math.floor(i / 9)]);
+            let aux = myArrayRand(substrac(mancanti, escludi));
+            
+            //console.log("Mancanti: ", mancanti);
+            //console.log("Escludi: ", escludi);
+            
+            console.log("aux: ", aux);
+            // console.log("freezed: ", freezed[Math.floor(i % 9)]);
+            
+            if(aux != null && !freezed[Math.floor(i % 9)]){
+                
+                console.log("Vettore prima: ", vec[Math.floor(i / 9)]);
+                
+                // considero la posizione di partenza
+                const oldNum = vec[Math.floor(i / 9)][i % 9];
+                
+                // considero la posizione corrente
+                if(newCycle){
+                    freezed[Math.floor(i % 9)] = true;              // la cella non può più essere cambiata, solo se ho ricominciato il ciclo
+                    newCycle = false;
+                }
+                vec[Math.floor(i / 9)][i % 9] = aux;
+                microTable[myIndexToSubtable(i)][myIndexToSubtableCell(i)] = aux;
+                
+                td[i].textContent = aux;
+                
+                console.log("Vettore dopo: ", vec[Math.floor(i / 9)]);
+                
+                if(!escludi_start.includes(oldNum)) {
+                    freezed[Math.floor(posVuota / 9)] = true;              // la cella non può più essere cambiata
+                    
+                    vec[Math.floor(posVuota / 9)][posVuota % 9] = oldNum;
+                    microTable[myIndexToSubtable(posVuota)][myIndexToSubtableCell(posVuota)] = oldNum;
+                    
+                    td[posVuota].textContent = oldNum;
+                    
+                }
+                
+            } else{
+                console.log("Nessun inserimento");
+            }   
+            
+            i++;
+            
+        } else{          
+            i--;        // torno nell'ultima cella della riga precedente
+            newCycle = true;
+
+            console.log("ricomincio la riga");                              
+            i = Math.floor(i / 9) * 9;      
+        }
+    }
+    
+    i = Math.floor(i / 9) * 9 + 9;  // nuova riga
+    console.log("FINE PASSO INDIETRO, i: ", i);
+    return true;
+}
+
+/* OLD passoIndietro
 function passoIndietro(td, DEBUG_pass, DEBUG_int){
     // console.log("Eseguo passo indietro");
-
+    
     numPassi = 0;
     numInterr++;
     i--;
@@ -178,6 +251,7 @@ function passoIndietro(td, DEBUG_pass, DEBUG_int){
     td[i].textContent = null;
     
 }
+*/
 
 function pulisci(){
     let td = document.querySelectorAll('#mainTable td');
@@ -193,6 +267,8 @@ function pulisci(){
     numEscludi = Array.from({ length: 9 }, () => Array(9).fill(null));
     numPassi = 0;  
     numInterr = 0;
+
+    console.clear();
 }
 
 /*
