@@ -10,6 +10,10 @@ function disegna(){
         for(let j = 0; j < 9; j++){
             
             let td = document.createElement("td");
+            td.contentEditable = true;
+            td.addEventListener("input", function() { // Aggiungi un gestore di eventi input
+                checkNumber(this, i, j); // Richiama la funzione checkNumber passando la cella modificata e il suo indice
+            });
             
             if(j % 3 == 0){
                 td.style.borderLeft = "5px solid black";
@@ -57,7 +61,7 @@ function benchMark(){
     let tentativi = parseInt(prompt("Inserisci il numero di tentativi:"));
     
     for(let i = 0; i < tentativi; i++)
-        start();
+    start();
 }
 
 function pulisciBenchMark(){
@@ -67,6 +71,61 @@ function pulisciBenchMark(){
     tentativi = 0;
 }
 
+// SCOPRI
+function scopri(){
+    /*
+    1) i numeri iniziali devono formare uno
+    schema simmetrico rispetto al centro
+    della griglia;
+    2) deve esistere una unica soluzione;
+    3) i numeri iniziali dovrebbero essere
+    meno di 30
+    */
+    let td = document.querySelectorAll('#mainTable td');
+    let num = Array.from(Array(81).keys());
+    
+    for(let i = 0; i < myRand(17, 20); i++){
+        let aux = myArrayRand(num);
+        
+        let index = num.indexOf(aux);
+        if (index !== -1) {
+            num.splice(index, 1);
+        }
+        console.log("num: ", num);
+
+        td[aux].textContent = vec[Math.floor(aux / 9)][aux % 9];
+        td[aux].contentEditable = false;
+        
+        let mirrored = mirror(aux);
+        td[mirrored].textContent = vec[Math.floor(mirrored / 9)][mirrored % 9];
+        td[mirrored].contentEditable = false;
+    }
+}
+
+function mirror(index){
+    const row = Math.floor(index / 9);
+    const col = index % 9;
+    
+    const mirroredRow = 8 - row;
+    const mirroredCol = 8 - col;
+    
+    return mirroredRow * 9 + mirroredCol;
+}
+
+function checkNumber(cell, i, j) {
+    var value = parseInt(cell.innerText);
+    if (!isNaN(value)) {
+        if(value == vec[i][j]){
+            cell.style.backgroundColor = "green";
+        } else{
+            cell.style.backgroundColor = "red";
+        }
+    } else{
+        cell.style.backgroundColor = "white";
+    }
+}
+
+// FINE SCOPRI
 
 function start(){
     
@@ -94,7 +153,7 @@ function start(){
             vec[Math.floor(i / 9)][i % 9] = aux;
             microTable[myIndexToSubtable(i)][myIndexToSubtableCell(i)] = aux;
             
-            td[i].textContent = aux;
+            //    td[i].textContent = aux;
             
             i++;
             
@@ -118,6 +177,8 @@ function start(){
     }
     res += 1;
     console.log(res);
+
+    scopri();
 }
 
 function passoIndietro(td){
@@ -184,7 +245,7 @@ function passoIndietro(td){
                 vec[Math.floor(i / 9)][i % 9] = aux;
                 microTable[myIndexToSubtable(i)][myIndexToSubtableCell(i)] = aux;
                 
-                td[i].textContent = aux;
+                //    td[i].textContent = aux;
                 
                 console.log("Vettore dopo: ", vec[Math.floor(i / 9)]);
                 
@@ -194,7 +255,7 @@ function passoIndietro(td){
                     vec[Math.floor(posVuota / 9)][posVuota % 9] = oldNum;
                     microTable[myIndexToSubtable(posVuota)][myIndexToSubtableCell(posVuota)] = oldNum;
                     
-                    td[posVuota].textContent = oldNum;
+                    //td[posVuota].textContent = oldNum;
                     
                 }
                 
@@ -207,7 +268,7 @@ function passoIndietro(td){
         } else{          
             i--;        // torno nell'ultima cella della riga precedente
             newCycle = true;
-
+            
             console.log("ricomincio la riga");                              
             i = Math.floor(i / 9) * 9;      
         }
@@ -217,41 +278,6 @@ function passoIndietro(td){
     console.log("FINE PASSO INDIETRO, i: ", i);
     return true;
 }
-
-/* OLD passoIndietro
-function passoIndietro(td, DEBUG_pass, DEBUG_int){
-    // console.log("Eseguo passo indietro");
-    
-    numPassi = 0;
-    numInterr++;
-    i--;
-    
-    
-    if(numPassi > DEBUG_pass || numInterr > DEBUG_int){
-        numEscludi = Array.from({ length: 9 }, () => Array(9).fill(null));
-        numInterr = 0;
-    }
-    
-    // cambio riga
-    if(Math.floor(i / 9) != Math.floor((i + 1) / 9)){
-        numEscludi = Array.from({ length: 9 }, () => Array(9).fill(null));
-        numInterr = 0;
-    }
-    
-    const lastNum = vec[Math.floor(i / 9)][i % 9];
-    console.log("lastNum: ", lastNum);
-    
-    console.log("before push:\n", numEscludi[Math.floor(i / 9)]);
-    numEscludi[Math.floor(i / 9)].push(lastNum);
-    console.log("after push:\n", numEscludi[Math.floor(i / 9)]);
-    
-    vec[Math.floor(i / 9)][i % 9] = null;
-    microTable[myIndexToSubtable(i)][myIndexToSubtableCell(i)] = null;
-    
-    td[i].textContent = null;
-    
-}
-*/
 
 function pulisci(){
     let td = document.querySelectorAll('#mainTable td');
@@ -267,7 +293,7 @@ function pulisci(){
     numEscludi = Array.from({ length: 9 }, () => Array(9).fill(null));
     numPassi = 0;  
     numInterr = 0;
-
+    
     console.clear();
 }
 
