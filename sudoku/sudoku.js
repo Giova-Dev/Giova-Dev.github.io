@@ -11,7 +11,7 @@ function disegna(){
         for(let j = 0; j < 9; j++){
             
             let td = document.createElement("td");
-            td.contentEditable = true;
+            td.contentEditable = false;
             td.addEventListener("input", function() { // Aggiungi un gestore di eventi input
                 checkNumber(this, i, j); // Richiama la funzione checkNumber passando la cella modificata e il suo indice
             });
@@ -50,28 +50,6 @@ var i = 0;
 var numEscludi = Array.from({ length: 9 }, () => Array(9).fill(null));
 var numPassi = 0;       // contatore passi senza interruzione
 var numInterr = 0;      // contatore passi interrotti
-
-// DEBUG
-var res = 0;
-var media;
-var tentativi = 0;
-
-
-function benchMark(){
-    pulisciBenchMark();
-    let tentativi = parseInt(prompt("Inserisci il numero di tentativi:"));
-    
-    for(let i = 0; i < tentativi; i++)
-    start();
-}
-
-function pulisciBenchMark(){
-    // BENCHMARK
-    res = 0;
-    media = null;
-    tentativi = 0;
-}
-
 
 // TROVA COPPIE
 
@@ -262,7 +240,7 @@ function coppie_orizzontali(td, num){
 
 
 // SCOPRI
-function scopri(){
+function scopri(diff){
     /*
     1) i numeri iniziali devono formare uno
     schema simmetrico rispetto al centro
@@ -277,7 +255,7 @@ function scopri(){
     let scoperti = coppie_verticali(td, num);
     scoperti += coppie_orizzontali(td, num);
     
-    for(let i = scoperti; i < myRand(17, 20); i++){
+    for(let i = scoperti; i < myRand(17, 20) + diff * 5; i++){
         let aux = myArrayRand(num);
         
         let index = num.indexOf(aux);
@@ -306,15 +284,18 @@ function mirror(index){
 }
 
 function checkNumber(cell, i, j) {
-    var value = parseInt(cell.innerText);
-    if (!isNaN(value)) {
+    let value = parseInt(cell.innerText);
+    
+    if (isNaN(value) || value < 1 || value > 9) {
+        cell.innerText = '';
+        cell.style.boxShadow = '';
+    } else if (!isNaN(value)) {
         if(value == vec[i][j]){
-            cell.style.backgroundColor = "green";
+            cell.style.boxShadow = '';
         } else{
-            cell.style.backgroundColor = "red";
+            // cell.style.backgroundColor = "red";
+            cell.style.boxShadow = 'inset 0 0 20px 10px red';
         }
-    } else{
-        cell.style.backgroundColor = "white";
     }
 }
 
@@ -323,10 +304,6 @@ function checkNumber(cell, i, j) {
 function start(){
     
     pulisci();
-    
-    document.getElementById("result").textContent = "Riusciti: "+ res;
-    document.getElementById("media").textContent = "Media: "+ media;
-    document.getElementById("tent").textContent = "Tentativi: "+ (++tentativi);
     
     let td = document.querySelectorAll('#mainTable td');
     
@@ -347,25 +324,29 @@ function start(){
         } else{
             console.log("aux: ", aux, ", pos: ", i, "\nInizio passo indietro");
             if(!passoIndietro(td)){
-                if(media == null){
-                    media = i;
-                } else{
-                    media = (media * (tentativi - 1) + 1 + i)/(tentativi);
-                }
                 start();
                 return;
             };
         }
     }
-    if(media == null){
-        media = i;
-    } else{
-        media = (media * (tentativi - 1) + 1 + i)/(tentativi);
-    }
-    res += 1;
-    console.log(res);
     
-    scopri();
+
+    showModalita();
+}
+
+function showModalita() {
+    var modalita = document.getElementById("modalita");
+    modalita.style.display = "block";
+}
+
+function chooseDifficulty(difficulty) {
+    hideModalita();
+    scopri(difficulty);
+}
+
+function hideModalita() {
+    var modalita = document.getElementById("modalita");
+    modalita.style.display = "none";
 }
 
 
@@ -473,6 +454,7 @@ function pulisci(){
         td[i].textContent = null;
         td[i].style.backgroundColor = "white";
         td[i].contentEditable = true;
+        td[i].style.boxShadow = '';
     }
     vec = Array.from({ length: 9 }, () => Array(9).fill(null));
     microTable = Array.from({ length: 9 }, () => Array(9).fill(null));  // ogni riga rappresenta una delle 9 micro tabelle 3x3
