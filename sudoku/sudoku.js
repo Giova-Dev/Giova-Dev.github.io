@@ -204,7 +204,7 @@ function scopri(diff){
     let scoperti = coppie_verticali(td, num);
     scoperti += coppie_orizzontali(td, num);
     
-    for(let i = scoperti; i < myRand(17, 20) + diff * 5; i++){
+    for(let i = scoperti; i < myRand(20, 23) + diff * 5; i++){
         let aux = myArrayRand(num);
         
         let index = num.indexOf(aux);
