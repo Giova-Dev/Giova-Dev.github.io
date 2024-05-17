@@ -292,6 +292,7 @@ function checkNumber(cell, i, j) {
     } else if (!isNaN(value)) {
         if(value == vec[i][j]){
             cell.style.boxShadow = '';
+            cell.contentEditable = false;
         } else{
             // cell.style.backgroundColor = "red";
             cell.style.boxShadow = 'inset 0 0 20px 10px red';
