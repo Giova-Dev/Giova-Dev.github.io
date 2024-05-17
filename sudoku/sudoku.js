@@ -1,4 +1,5 @@
 
+
 function disegna(){
     
     let table = document.getElementById("mainTable");
@@ -71,6 +72,142 @@ function pulisciBenchMark(){
     tentativi = 0;
 }
 
+
+// TROVA COPPIE
+
+function coppie(){
+    
+    console.clear();
+    
+    let td = document.querySelectorAll('#mainTable td');
+    
+    let index_1 = 0;
+    let index_2 = index_1 + 9;
+    
+    //let num1 = vec[Math.floor(index_1/9)][index_1%9];
+    //let num2 = vec[Math.floor(index_2/9)][index_2%9];
+    
+    let cur_index_1 = 3;
+    let cur_index_2 = cur_index_1 + 9;
+    
+    for(let sub = 0; sub < 3; sub++){                           //per ogni sottocella
+        for(let x = 0; x < 6; x++){                                  // per ogni colonna
+            for(let k = 0; k < 3; k++){                                 // 3 combinazioni possibili
+                //console.log("Combinazione ", k + 1);
+
+                index_1 = x + (k%2) * 9 + sub * 27;
+                index_2 = x + (k%2 + 1) * 9 + sub * 27 + Math.floor(k/2) * 9;
+                
+                cur_index_1 = (Math.floor(index_1/3) + 1) * 3;
+                cur_index_2 = (Math.floor(index_2/3) + 1) * 3 ;
+
+                //console.log("1: [" + Math.floor(index_1/9) + ", " + (index_1%9) + "]");
+                //console.log("2: [" + Math.floor(index_2/9) + ", " + (index_2%9) + "]\n\n");
+                
+                //console.log(index_1 +" " + Math.floor((index_1%9)/3));
+                for(let j = 0; j < (6 - Math.floor((index_1%9)/3) * 3); j++){         //controllo righe
+                    
+                    
+                    //console.log("1': [" + Math.floor(cur_index_1/9) + ", " + (cur_index_1%9) + "]");
+                    
+                    //console.log("2': [" + Math.floor(cur_index_2/9) + ", " + (cur_index_2%9) + "]");
+
+                    let num1 = vec[Math.floor(index_1/9)][index_1%9];
+                    let num2 = vec[Math.floor(index_2/9)][index_2%9];
+                    let cur_num1 =  vec[Math.floor(cur_index_1/9)][cur_index_1%9];
+                    let cur_num2 =  vec[Math.floor(cur_index_2/9)][cur_index_2%9];
+                    
+                    if(num1 == cur_num2 && num2 == cur_num1){
+                        // coppia
+                        /*
+                        console.log("COPPIA");
+                        console.log("1: ", vec[Math.floor(cur_index_1/9)][cur_index_1%9], ", 2: ", vec[Math.floor(cur_index_2/9)][cur_index_2%9]);
+                        console.log("1: [" + Math.floor(index_1/9) + ", " + (index_1%9) + "]");
+                        console.log("1': [" + Math.floor(cur_index_1/9) + ", " + (cur_index_1%9) + "]");
+                        console.log("2: [" + Math.floor(index_2/9) + ", " + (index_2%9) + "]");
+                        console.log("2': [" + Math.floor(cur_index_2/9) + ", " + (cur_index_2%9) + "]");
+                        */
+                        td[index_1].style.backgroundColor = "yellow";
+                        td[index_2].style.backgroundColor = "yellow";
+                        td[cur_index_1].style.backgroundColor = "yellow";
+                        td[cur_index_2].style.backgroundColor = "yellow";
+                        break;
+                    } else if(num1 == cur_num2 || num2 == cur_num1){
+                        // coppia impossibile
+                        console.log("COPPIA IMPOSSIBILE");
+                        break;
+                    }
+
+                    cur_index_1++;
+                    cur_index_2++;
+                }
+            }
+        }
+    }
+}
+
+/*
+console.clear();
+
+let index_1 = 0;
+let index_2 = index_1 + 9;
+
+let num1 = vec[Math.floor(index_1/9)][index_1%9];
+let num2 = vec[Math.floor(index_2/9)][index_2%9];
+
+let cur_index_1 = 3;
+let cur_index_2 = cur_index_1 + 9;
+
+for(let sub = 0; sub <3; sub++){
+    for(let k = 0; k < 3; k++){
+        if(k == 0){
+            index_1 = k * 9 + sub * 27;
+            index_2 = index_1 + 9;
+        }
+        if(k == 1){
+            index_1 = k * 9 + sub * 27;
+            index_2 = index_1 + 9;
+        }
+        if(k == 2){
+            index_1 =  sub * 27;
+            index_2 = index_1 + 18;
+        }
+        
+        cur_index_1 = index_1 + 3;
+        cur_index_2 = index_2 + 3;
+        
+        for(let j = 0; j < 6; j++){
+            
+            console.log("index_1 ", index_1);
+            console.log("index_2 ", index_2);
+            console.log("cur_index_1 ", cur_index_1);
+            console.log("cur_index_2 ", cur_index_2);
+            
+            
+            if(vec[Math.floor(index_1/9)][index_1%9] == vec[Math.floor(cur_index_2/9)][cur_index_2%9] && vec[Math.floor(index_2/9)][index_2%9] == vec[Math.floor(cur_index_1/9)][cur_index_1%9]){
+                console.log("COPPIA");
+                console.log("num1: ", vec[Math.floor(index_1/9)][index_1%9], ", num2: ", vec[Math.floor(index_2/9)][index_2%9]);
+                console.log("1: ", vec[Math.floor(cur_index_1/9)][cur_index_1%9], ", 2: ", vec[Math.floor(cur_index_2/9)][cur_index_2%9]);
+                console.log("1: [" + Math.floor(index_1/9) + ", " + (index_1%9) + "]");
+                console.log("1': [" + Math.floor(cur_index_1/9) + ", " + (cur_index_1%9) + "]");
+                console.log("2: [" + Math.floor(index_2/9) + ", " + (index_2%9) + "]");
+                console.log("2': [" + Math.floor(cur_index_2/9) + ", " + (cur_index_2%9) + "]");
+                break;
+            }
+            
+            if(num1 == vec[Math.floor(cur_index_2/9)][cur_index_2%9] || num2 == vec[Math.floor(cur_index_1/9)][cur_index_1%9]){
+                console.log("COPPIA IMPOSSIBILE");
+                break;
+            }
+            cur_index_1++;
+            cur_index_2++;
+        }
+    }
+}
+*/
+
+
+
 // SCOPRI
 function scopri(){
     /*
@@ -91,8 +228,8 @@ function scopri(){
         if (index !== -1) {
             num.splice(index, 1);
         }
-        console.log("num: ", num);
-
+        //console.log("num: ", num);
+        
         td[aux].textContent = vec[Math.floor(aux / 9)][aux % 9];
         td[aux].contentEditable = false;
         
@@ -100,6 +237,8 @@ function scopri(){
         td[mirrored].textContent = vec[Math.floor(mirrored / 9)][mirrored % 9];
         td[mirrored].contentEditable = false;
     }
+    
+    coppie();
 }
 
 function mirror(index){
@@ -131,10 +270,6 @@ function start(){
     
     pulisci();
     
-    // riga: vec[i / 9].includes(n)
-    // colonna: myColContains(vec, i % 9, n)
-    // quadrato: microTable[myIndexToSubtable(i)].includes(n)
-    
     document.getElementById("result").textContent = "Riusciti: "+ res;
     document.getElementById("media").textContent = "Media: "+ media;
     document.getElementById("tent").textContent = "Tentativi: "+ (++tentativi);
@@ -152,8 +287,6 @@ function start(){
         if(aux != null){
             vec[Math.floor(i / 9)][i % 9] = aux;
             microTable[myIndexToSubtable(i)][myIndexToSubtableCell(i)] = aux;
-            
-            //    td[i].textContent = aux;
             
             i++;
             
@@ -177,9 +310,10 @@ function start(){
     }
     res += 1;
     console.log(res);
-
+    
     scopri();
 }
+
 
 function passoIndietro(td){
     console.clear();
@@ -255,8 +389,7 @@ function passoIndietro(td){
                     vec[Math.floor(posVuota / 9)][posVuota % 9] = oldNum;
                     microTable[myIndexToSubtable(posVuota)][myIndexToSubtableCell(posVuota)] = oldNum;
                     
-                    //td[posVuota].textContent = oldNum;
-                    
+                    //td[posVuota].textContent = oldNum; 
                 }
                 
             } else{
@@ -282,9 +415,11 @@ function passoIndietro(td){
 function pulisci(){
     let td = document.querySelectorAll('#mainTable td');
     
-    for(let i = 0; i < td.length; i++)
-    td[i].textContent = null;
-    
+    for(let i = 0; i < td.length; i++){
+        td[i].textContent = null;
+        td[i].style.backgroundColor = "white";
+        td[i].contentEditable = true;
+    }
     vec = Array.from({ length: 9 }, () => Array(9).fill(null));
     microTable = Array.from({ length: 9 }, () => Array(9).fill(null));  // ogni riga rappresenta una delle 9 micro tabelle 3x3
     
@@ -297,31 +432,6 @@ function pulisci(){
     console.clear();
 }
 
-/*
-let td = document.querySelectorAll('#mainTable td');
-
-for(let i = 0; i < 81; i++){
-    let n = myRand(0, 9);
-    
-    // un numero non può essere contenuto 2 volte nella stessa riga
-    vec[i / 9].includes(n)
-    
-    // un numero non può essere contenuto 2 volte nella stessa colonna
-    myColContains(vec, i % 9, n)
-    
-    // un numero non può essere contenuto 2 volte nella stessa cella 3x3
-    microTable[myIndexToSubtable(i)].includes(n)
-    
-    
-    // condizioni passo indietro
-    
-    
-    // passo indietro
-    vec[i / 9].splice(i%9, 1)
-    microTable[myIndexToSubtable(i)].pop()
-    i--
-}
-*/
 
 
 
@@ -352,15 +462,6 @@ function myIndexToSubtableCell(cellIndex){
     
     return subTableIndex;
 }
-
-/*
-DA RIMUOVERE
-
-function myColContains(matrice, indiceColonna, elemento) {
-    const colonna = matrice.map(row => row[indiceColonna]);
-    return colonna.includes(elemento);
-}
-*/
 
 function myColContains(matrice, indiceColonna) {
     // data una matrice ed un indice di colonna restituisce gli elementi di tale colonna
