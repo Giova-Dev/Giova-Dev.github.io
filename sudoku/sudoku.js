@@ -48,8 +48,8 @@ var microTable = Array.from({ length: 9 }, () => Array(9).fill(null));  // ogni 
 var i = 0;
 
 var numEscludi = Array.from({ length: 9 }, () => Array(9).fill(null));
-var numPassi = 0;       // contatore passi senza interruzione
-var numInterr = 0;      // contatore passi interrotti
+
+var completati = 0;
 
 // TROVA COPPIE
 
@@ -61,9 +61,6 @@ function coppie_verticali(td, num){
     
     let index_1 = 0;
     let index_2 = index_1 + 9;
-    
-    //let num1 = vec[Math.floor(index_1/9)][index_1%9];
-    //let num2 = vec[Math.floor(index_2/9)][index_2%9];
     
     let cur_index_1 = 3;
     let cur_index_2 = cur_index_1 + 9;
@@ -79,16 +76,7 @@ function coppie_verticali(td, num){
                 cur_index_1 = (Math.floor(index_1/3) + 1) * 3;
                 cur_index_2 = (Math.floor(index_2/3) + 1) * 3 ;
                 
-                //console.log("1: [" + Math.floor(index_1/9) + ", " + (index_1%9) + "]");
-                //console.log("2: [" + Math.floor(index_2/9) + ", " + (index_2%9) + "]\n\n");
-                
-                //console.log(index_1 +" " + Math.floor((index_1%9)/3));
                 for(let j = 0; j < (6 - Math.floor((index_1%9)/3) * 3); j++){         //controllo righe
-                    
-                    
-                    //console.log("1': [" + Math.floor(cur_index_1/9) + ", " + (cur_index_1%9) + "]");
-                    
-                    //console.log("2': [" + Math.floor(cur_index_2/9) + ", " + (cur_index_2%9) + "]");
                     
                     let num1 = vec[Math.floor(index_1/9)][index_1%9];
                     let num2 = vec[Math.floor(index_2/9)][index_2%9];
@@ -97,20 +85,6 @@ function coppie_verticali(td, num){
                     
                     if(num1 == cur_num2 && num2 == cur_num1){
                         // coppia
-                        /*
-                        console.log("COPPIA");
-                        console.log("1: ", vec[Math.floor(cur_index_1/9)][cur_index_1%9], ", 2: ", vec[Math.floor(cur_index_2/9)][cur_index_2%9]);
-                        console.log("1: [" + Math.floor(index_1/9) + ", " + (index_1%9) + "]");
-                        console.log("1': [" + Math.floor(cur_index_1/9) + ", " + (cur_index_1%9) + "]");
-                        console.log("2: [" + Math.floor(index_2/9) + ", " + (index_2%9) + "]");
-                        console.log("2': [" + Math.floor(cur_index_2/9) + ", " + (cur_index_2%9) + "]");
-                        */
-                        /*
-                        td[index_1].style.backgroundColor = "yellow";
-                        td[index_2].style.backgroundColor = "yellow";
-                        td[cur_index_1].style.backgroundColor = "yellow";
-                        td[cur_index_2].style.backgroundColor = "yellow";
-                        */
                         
                         // scopri uno fra i 4
                         let __aux = myArrayRand([index_1, index_2, cur_index_1, cur_index_2]);
@@ -154,9 +128,6 @@ function coppie_orizzontali(td, num){
     let index_1 = 0;
     let index_2 = index_1 + 9;
     
-    //let num1 = vec[Math.floor(index_1/9)][index_1%9];
-    //let num2 = vec[Math.floor(index_2/9)][index_2%9];
-    
     let cur_index_1 = 3;
     let cur_index_2 = cur_index_1 + 9;
     
@@ -168,19 +139,11 @@ function coppie_orizzontali(td, num){
                 index_1 = x * 9 + (k%2) + sub * 3;
                 index_2 = x * 9 + (k%2 + 1) + sub * 3 + Math.floor(k/2);
                 
-                
                 cur_index_1 = (Math.floor(index_1/27) + 1) * 27 + index_1%9;
                 cur_index_2 = (Math.floor(index_2/27) + 1) * 27 + index_2%9;
                 
-                console.log("\n\n1: [" + Math.floor(index_1/9) + ", " + (index_1%9) + "]");
-                console.log("2: [" + Math.floor(index_2/9) + ", " + (index_2%9) + "]\n\n");
-                
                 console.log(index_1 +" " + Math.floor(index_1/27));
                 for(let j = 0; j < (6 - Math.floor(index_1/27) * 3); j++){         //controllo righe
-                    
-                    
-                    console.log("1': [" + Math.floor(cur_index_1/9) + ", " + (cur_index_1%9) + "]");
-                    console.log("2': [" + Math.floor(cur_index_2/9) + ", " + (cur_index_2%9) + "]");
                     
                     let num1 = vec[Math.floor(index_1/9)][index_1%9];
                     let num2 = vec[Math.floor(index_2/9)][index_2%9];
@@ -189,20 +152,6 @@ function coppie_orizzontali(td, num){
                     
                     if(num1 == cur_num2 && num2 == cur_num1){
                         // coppia
-                        /*
-                        console.log("COPPIA");
-                        console.log("1: ", vec[Math.floor(cur_index_1/9)][cur_index_1%9], ", 2: ", vec[Math.floor(cur_index_2/9)][cur_index_2%9]);
-                        console.log("1: [" + Math.floor(index_1/9) + ", " + (index_1%9) + "]");
-                        console.log("1': [" + Math.floor(cur_index_1/9) + ", " + (cur_index_1%9) + "]");
-                        console.log("2: [" + Math.floor(index_2/9) + ", " + (index_2%9) + "]");
-                        console.log("2': [" + Math.floor(cur_index_2/9) + ", " + (cur_index_2%9) + "]");
-                        */
-                        /*
-                        td[index_1].style.backgroundColor = "yellow";
-                        td[index_2].style.backgroundColor = "yellow";
-                        td[cur_index_1].style.backgroundColor = "yellow";
-                        td[cur_index_2].style.backgroundColor = "yellow";
-                        */
                         
                         // scopri uno fra i 4
                         let __aux = myArrayRand([index_1, index_2, cur_index_1, cur_index_2]);
@@ -293,11 +242,26 @@ function checkNumber(cell, i, j) {
         if(value == vec[i][j]){
             cell.style.boxShadow = '';
             cell.contentEditable = false;
+            completati++;
+            
+            if(completati >= 81){
+                fine();
+            }
+            
         } else{
             // cell.style.backgroundColor = "red";
             cell.style.boxShadow = 'inset 0 0 20px 10px red';
         }
     }
+}
+
+function fine(){
+    const messageElement = document.getElementById('completato');
+    messageElement.style.display = 'block';
+    
+    setTimeout(() => {
+        messageElement.style.display = 'none';
+    }, 1.5 * 1000);
 }
 
 // FINE SCOPRI
@@ -331,7 +295,7 @@ function start(){
         }
     }
     
-
+    
     showModalita();
 }
 
@@ -463,8 +427,7 @@ function pulisci(){
     i = 0;
     
     numEscludi = Array.from({ length: 9 }, () => Array(9).fill(null));
-    numPassi = 0;  
-    numInterr = 0;
+    completati = 0;
     
     console.clear();
 }

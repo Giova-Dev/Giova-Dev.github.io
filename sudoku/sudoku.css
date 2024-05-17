@@ -92,14 +92,14 @@
         background-color: white;
         position: relative;
     }
-
+    
     #mainTable {
         margin: 2% auto; /* Margini ridotti */
         width: 96%; /* Larghezza della tabella adattata */
         border-collapse: collapse;
         border: 1px solid black;
     }
-
+    
     #mainTable>tr td {
         border: 1px solid black;
         width: 10vw;
@@ -110,11 +110,11 @@
         line-height: 10vw; /* Imposta l'altezza della riga uguale all'altezza della cella */
         transition: box-shadow 0.3s;
     }
-
+    
     body {
         background-color: #121212;
     }
-
+    
     #start {
         margin: 2% auto; /* Margini ridotti */
         padding: 2%;
@@ -123,11 +123,11 @@
         font-family: Arial, sans-serif;
         background-color: darkgray;
     }
-
+    
     button:hover {
         background-color: dimgray;
     }
-
+    
     #modalita {
         display: none;
         position: fixed;
@@ -140,7 +140,7 @@
         border: 2px solid black;
         max-width: 90%;
     }
-
+    
     #modalita button {
         display: block;
         width: 90%;
@@ -154,8 +154,33 @@
         transition: background-color 0.3s;
         font-size: 3vw;
     }
-
+    
     #modalita button:hover {
         background-color: #327436;
     }
+    
+    #completato {
+        font-size: 5vw;
+        padding: 3vh 5vw;
+    }
+}
+
+
+#completato {
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2vh 4vw;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 4vw;
+    border-radius: 1vh;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    z-index: 1000;
+    max-width: 90%;
+    margin: 0 5%;
+    word-wrap: break-word;
 }
