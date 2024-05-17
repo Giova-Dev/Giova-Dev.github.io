@@ -75,11 +75,11 @@ function pulisciBenchMark(){
 
 // TROVA COPPIE
 
-function coppie(){
+function coppie_verticali(td, num){
     
     console.clear();
     
-    let td = document.querySelectorAll('#mainTable td');
+    let rimossi = 0;
     
     let index_1 = 0;
     let index_2 = index_1 + 9;
@@ -94,13 +94,13 @@ function coppie(){
         for(let x = 0; x < 6; x++){                                  // per ogni colonna
             for(let k = 0; k < 3; k++){                                 // 3 combinazioni possibili
                 //console.log("Combinazione ", k + 1);
-
+                
                 index_1 = x + (k%2) * 9 + sub * 27;
                 index_2 = x + (k%2 + 1) * 9 + sub * 27 + Math.floor(k/2) * 9;
                 
                 cur_index_1 = (Math.floor(index_1/3) + 1) * 3;
                 cur_index_2 = (Math.floor(index_2/3) + 1) * 3 ;
-
+                
                 //console.log("1: [" + Math.floor(index_1/9) + ", " + (index_1%9) + "]");
                 //console.log("2: [" + Math.floor(index_2/9) + ", " + (index_2%9) + "]\n\n");
                 
@@ -111,7 +111,7 @@ function coppie(){
                     //console.log("1': [" + Math.floor(cur_index_1/9) + ", " + (cur_index_1%9) + "]");
                     
                     //console.log("2': [" + Math.floor(cur_index_2/9) + ", " + (cur_index_2%9) + "]");
-
+                    
                     let num1 = vec[Math.floor(index_1/9)][index_1%9];
                     let num2 = vec[Math.floor(index_2/9)][index_2%9];
                     let cur_num1 =  vec[Math.floor(cur_index_1/9)][cur_index_1%9];
@@ -127,85 +127,138 @@ function coppie(){
                         console.log("2: [" + Math.floor(index_2/9) + ", " + (index_2%9) + "]");
                         console.log("2': [" + Math.floor(cur_index_2/9) + ", " + (cur_index_2%9) + "]");
                         */
+                        /*
                         td[index_1].style.backgroundColor = "yellow";
                         td[index_2].style.backgroundColor = "yellow";
                         td[cur_index_1].style.backgroundColor = "yellow";
                         td[cur_index_2].style.backgroundColor = "yellow";
+                        */
+                        
+                        // scopri uno fra i 4
+                        let __aux = myArrayRand([index_1, index_2, cur_index_1, cur_index_2]);
+                        let __index = num.indexOf(__aux);
+                        if (__index !== -1) {
+                            num.splice(__index, 1);
+                        }
+                        td[__aux].textContent = vec[Math.floor(__aux / 9)][__aux % 9];
+                        td[__aux].contentEditable = false;
+                        
+                        let mirrored = mirror(__aux);
+                        td[mirrored].textContent = vec[Math.floor(mirrored / 9)][mirrored % 9];
+                        td[mirrored].contentEditable = false;
+                        
+                        rimossi++;
+                        
                         break;
                     } else if(num1 == cur_num2 || num2 == cur_num1){
                         // coppia impossibile
                         console.log("COPPIA IMPOSSIBILE");
                         break;
                     }
-
+                    
                     cur_index_1++;
                     cur_index_2++;
                 }
             }
         }
     }
+    
+    return rimossi;
 }
 
-/*
-console.clear();
 
-let index_1 = 0;
-let index_2 = index_1 + 9;
-
-let num1 = vec[Math.floor(index_1/9)][index_1%9];
-let num2 = vec[Math.floor(index_2/9)][index_2%9];
-
-let cur_index_1 = 3;
-let cur_index_2 = cur_index_1 + 9;
-
-for(let sub = 0; sub <3; sub++){
-    for(let k = 0; k < 3; k++){
-        if(k == 0){
-            index_1 = k * 9 + sub * 27;
-            index_2 = index_1 + 9;
-        }
-        if(k == 1){
-            index_1 = k * 9 + sub * 27;
-            index_2 = index_1 + 9;
-        }
-        if(k == 2){
-            index_1 =  sub * 27;
-            index_2 = index_1 + 18;
-        }
-        
-        cur_index_1 = index_1 + 3;
-        cur_index_2 = index_2 + 3;
-        
-        for(let j = 0; j < 6; j++){
-            
-            console.log("index_1 ", index_1);
-            console.log("index_2 ", index_2);
-            console.log("cur_index_1 ", cur_index_1);
-            console.log("cur_index_2 ", cur_index_2);
-            
-            
-            if(vec[Math.floor(index_1/9)][index_1%9] == vec[Math.floor(cur_index_2/9)][cur_index_2%9] && vec[Math.floor(index_2/9)][index_2%9] == vec[Math.floor(cur_index_1/9)][cur_index_1%9]){
-                console.log("COPPIA");
-                console.log("num1: ", vec[Math.floor(index_1/9)][index_1%9], ", num2: ", vec[Math.floor(index_2/9)][index_2%9]);
-                console.log("1: ", vec[Math.floor(cur_index_1/9)][cur_index_1%9], ", 2: ", vec[Math.floor(cur_index_2/9)][cur_index_2%9]);
-                console.log("1: [" + Math.floor(index_1/9) + ", " + (index_1%9) + "]");
-                console.log("1': [" + Math.floor(cur_index_1/9) + ", " + (cur_index_1%9) + "]");
-                console.log("2: [" + Math.floor(index_2/9) + ", " + (index_2%9) + "]");
-                console.log("2': [" + Math.floor(cur_index_2/9) + ", " + (cur_index_2%9) + "]");
-                break;
+function coppie_orizzontali(td, num){
+    
+    console.clear();
+    
+    let rimossi = 0;
+    
+    let index_1 = 0;
+    let index_2 = index_1 + 9;
+    
+    //let num1 = vec[Math.floor(index_1/9)][index_1%9];
+    //let num2 = vec[Math.floor(index_2/9)][index_2%9];
+    
+    let cur_index_1 = 3;
+    let cur_index_2 = cur_index_1 + 9;
+    
+    for(let sub = 0; sub < 3; sub++){                           //per ogni sottocella
+        for(let x = 0; x < 6; x++){                                  // per ogni riga
+            for(let k = 0; k < 3; k++){                                 // 3 combinazioni possibili
+                //console.log("Combinazione ", k + 1);
+                
+                index_1 = x * 9 + (k%2) + sub * 3;
+                index_2 = x * 9 + (k%2 + 1) + sub * 3 + Math.floor(k/2);
+                
+                
+                cur_index_1 = (Math.floor(index_1/27) + 1) * 27 + index_1%9;
+                cur_index_2 = (Math.floor(index_2/27) + 1) * 27 + index_2%9;
+                
+                console.log("\n\n1: [" + Math.floor(index_1/9) + ", " + (index_1%9) + "]");
+                console.log("2: [" + Math.floor(index_2/9) + ", " + (index_2%9) + "]\n\n");
+                
+                console.log(index_1 +" " + Math.floor(index_1/27));
+                for(let j = 0; j < (6 - Math.floor(index_1/27) * 3); j++){         //controllo righe
+                    
+                    
+                    console.log("1': [" + Math.floor(cur_index_1/9) + ", " + (cur_index_1%9) + "]");
+                    console.log("2': [" + Math.floor(cur_index_2/9) + ", " + (cur_index_2%9) + "]");
+                    
+                    let num1 = vec[Math.floor(index_1/9)][index_1%9];
+                    let num2 = vec[Math.floor(index_2/9)][index_2%9];
+                    let cur_num1 =  vec[Math.floor(cur_index_1/9)][cur_index_1%9];
+                    let cur_num2 =  vec[Math.floor(cur_index_2/9)][cur_index_2%9];
+                    
+                    if(num1 == cur_num2 && num2 == cur_num1){
+                        // coppia
+                        /*
+                        console.log("COPPIA");
+                        console.log("1: ", vec[Math.floor(cur_index_1/9)][cur_index_1%9], ", 2: ", vec[Math.floor(cur_index_2/9)][cur_index_2%9]);
+                        console.log("1: [" + Math.floor(index_1/9) + ", " + (index_1%9) + "]");
+                        console.log("1': [" + Math.floor(cur_index_1/9) + ", " + (cur_index_1%9) + "]");
+                        console.log("2: [" + Math.floor(index_2/9) + ", " + (index_2%9) + "]");
+                        console.log("2': [" + Math.floor(cur_index_2/9) + ", " + (cur_index_2%9) + "]");
+                        */
+                        /*
+                        td[index_1].style.backgroundColor = "yellow";
+                        td[index_2].style.backgroundColor = "yellow";
+                        td[cur_index_1].style.backgroundColor = "yellow";
+                        td[cur_index_2].style.backgroundColor = "yellow";
+                        */
+                        
+                        // scopri uno fra i 4
+                        let __aux = myArrayRand([index_1, index_2, cur_index_1, cur_index_2]);
+                        let __index = num.indexOf(__aux);
+                        if (__index !== -1) {
+                            num.splice(__index, 1);
+                            
+                            td[__aux].textContent = vec[Math.floor(__aux / 9)][__aux % 9];
+                            td[__aux].contentEditable = false;
+                            
+                            let mirrored = mirror(__aux);
+                            td[mirrored].textContent = vec[Math.floor(mirrored / 9)][mirrored % 9];
+                            td[mirrored].contentEditable = false;
+                            
+                            rimossi++;
+                        }
+                        
+                        
+                        break;
+                    } else if(num1 == cur_num2 || num2 == cur_num1){
+                        // coppia impossibile
+                        console.log("COPPIA IMPOSSIBILE");
+                        break;
+                    }
+                    
+                    cur_index_1 += 9;
+                    cur_index_2 += 9;
+                }
             }
-            
-            if(num1 == vec[Math.floor(cur_index_2/9)][cur_index_2%9] || num2 == vec[Math.floor(cur_index_1/9)][cur_index_1%9]){
-                console.log("COPPIA IMPOSSIBILE");
-                break;
-            }
-            cur_index_1++;
-            cur_index_2++;
         }
     }
+    
+    return rimossi;
 }
-*/
-
 
 
 // SCOPRI
@@ -221,7 +274,10 @@ function scopri(){
     let td = document.querySelectorAll('#mainTable td');
     let num = Array.from(Array(81).keys());
     
-    for(let i = 0; i < myRand(17, 20); i++){
+    let scoperti = coppie_verticali(td, num);
+    scoperti += coppie_orizzontali(td, num);
+    
+    for(let i = scoperti; i < myRand(17, 20); i++){
         let aux = myArrayRand(num);
         
         let index = num.indexOf(aux);
@@ -237,8 +293,6 @@ function scopri(){
         td[mirrored].textContent = vec[Math.floor(mirrored / 9)][mirrored % 9];
         td[mirrored].contentEditable = false;
     }
-    
-    coppie();
 }
 
 function mirror(index){
