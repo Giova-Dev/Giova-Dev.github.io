@@ -91,15 +91,24 @@ function coppie_verticali(td, num){
                         let __index = num.indexOf(__aux);
                         if (__index !== -1) {
                             num.splice(__index, 1);
+                            td[__aux].textContent = vec[Math.floor(__aux / 9)][__aux % 9];
+                            td[__aux].contentEditable = false;
+                            
+                            let mirrored = mirror(__aux);
+                            __index = num.indexOf(mirrored);
+                            if (__index !== -1) {
+                                num.splice(__index, 1);
+                                
+                                td[mirrored].textContent = vec[Math.floor(mirrored / 9)][mirrored % 9];
+                                td[mirrored].contentEditable = false;
+                                
+                                rimossi += 2;
+                            }
+                            else {
+                                rimossi++;
+                            }                            
                         }
-                        td[__aux].textContent = vec[Math.floor(__aux / 9)][__aux % 9];
-                        td[__aux].contentEditable = false;
                         
-                        let mirrored = mirror(__aux);
-                        td[mirrored].textContent = vec[Math.floor(mirrored / 9)][mirrored % 9];
-                        td[mirrored].contentEditable = false;
-                        
-                        rimossi++;
                         
                         break;
                     } else if(num1 == cur_num2 || num2 == cur_num1){
@@ -163,10 +172,17 @@ function coppie_orizzontali(td, num){
                             td[__aux].contentEditable = false;
                             
                             let mirrored = mirror(__aux);
-                            td[mirrored].textContent = vec[Math.floor(mirrored / 9)][mirrored % 9];
-                            td[mirrored].contentEditable = false;
-                            
-                            rimossi++;
+                            __index = num.indexOf(mirrored);
+                            if (__index !== -1) {
+                                num.splice(__index, 1);
+                                td[mirrored].textContent = vec[Math.floor(mirrored / 9)][mirrored % 9];
+                                td[mirrored].contentEditable = false;
+                                
+                                rimossi +=2;
+                            }
+                            else {
+                                rimossi++;
+                            }   
                         }
                         
                         
@@ -189,6 +205,7 @@ function coppie_orizzontali(td, num){
 
 
 // SCOPRI
+
 function scopri(diff){
     /*
     1) i numeri iniziali devono formare uno
@@ -204,7 +221,12 @@ function scopri(diff){
     let scoperti = coppie_verticali(td, num);
     scoperti += coppie_orizzontali(td, num);
     
-    for(let i = scoperti; i < myRand(20, 23) + diff * 5; i++){
+    completati += scoperti;
+    
+    console.clear();
+    console.log("scoperti: ", scoperti);
+    
+    for(let j = scoperti; j < myRand(20, 25) + diff * 9; j++){
         let aux = myArrayRand(num);
         
         let index = num.indexOf(aux);
@@ -215,11 +237,51 @@ function scopri(diff){
         
         td[aux].textContent = vec[Math.floor(aux / 9)][aux % 9];
         td[aux].contentEditable = false;
+        completati++;
         
         let mirrored = mirror(aux);
         td[mirrored].textContent = vec[Math.floor(mirrored / 9)][mirrored % 9];
         td[mirrored].contentEditable = false;
+        completati++;
+        
+        console.log("completati: ", completati); 
     }
+    
+    let numbers = Array.from(td).map(td => {
+        let num = parseInt(td.textContent);
+        return isNaN(num) ? 0 : num;
+    });
+    console.log(numbers);
+    console.log(hasUniqueSolution(convertTo2DArray(numbers)));  // Output: true o false
+    
+    let DEBUG_aux = 0;
+    while(!hasUniqueSolution(convertTo2DArray(numbers))){
+        let aux = myArrayRand(num);
+        
+        let index = num.indexOf(aux);
+        if (index !== -1) {
+            num.splice(index, 1);
+        }
+        //console.log("num: ", num);
+        
+        td[aux].textContent = vec[Math.floor(aux / 9)][aux % 9];
+        td[aux].contentEditable = false;
+        completati++;
+        
+        let mirrored = mirror(aux);
+        td[mirrored].textContent = vec[Math.floor(mirrored / 9)][mirrored % 9];
+        td[mirrored].contentEditable = false;
+        completati++;
+        
+        numbers = Array.from(td).map(td => {
+            let num = parseInt(td.textContent);
+            return isNaN(num) ? 0 : num;
+        });
+        DEBUG_aux++;
+        
+    }
+    
+    console.log(hasUniqueSolution(convertTo2DArray(numbers)) + ", " + DEBUG_aux);
 }
 
 function mirror(index){
@@ -243,7 +305,7 @@ function checkNumber(cell, i, j) {
             cell.style.boxShadow = '';
             cell.contentEditable = false;
             completati++;
-            
+            console.log("completati: ", completati);
             if(completati >= 81){
                 fine();
             }
@@ -496,4 +558,57 @@ function intersec(arr1, arr2){
 
 function substrac(arr1, arr2){
     return arr1.filter(element => !arr2.includes(element));
+}
+
+
+// SUDOKU RISOLVIBILE
+
+function isValid(board, row, col, num) {
+    for (let x = 0; x < 9; x++) {
+        if (board[row][x] === num || board[x][col] === num || board[3 * Math.floor(row / 3) + Math.floor(x / 3)][3 * Math.floor(col / 3) + x % 3] === num) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function solveSudoku(board, row = 0, col = 0, solutions = { count: 0 }) {
+    if (row === 9) {
+        solutions.count++;
+        return solutions.count === 1;  // We found one solution
+    }
+    
+    if (col === 9) {
+        return solveSudoku(board, row + 1, 0, solutions);
+    }
+    
+    if (board[row][col] !== 0) {
+        return solveSudoku(board, row, col + 1, solutions);
+    }
+    
+    for (let num = 1; num <= 9; num++) {
+        if (isValid(board, row, col, num)) {
+            board[row][col] = num;
+            if (solveSudoku(board, row, col + 1, solutions)) {
+                if (solutions.count > 1) {
+                    return false;  // More than one solution found
+                }
+            }
+            board[row][col] = 0;  // Backtrack
+        }
+    }
+    
+    return solutions.count === 1;  // Only one solution found so far
+}
+
+function hasUniqueSolution(board) {
+    return solveSudoku(board);
+}
+
+function convertTo2DArray(numbers) {
+    let board = [];
+    for (let i = 0; i < 9; i++) {
+        board.push(numbers.slice(i * 9, i * 9 + 9));
+    }
+    return board;
 }
