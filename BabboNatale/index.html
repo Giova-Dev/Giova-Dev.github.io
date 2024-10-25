@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Babbo Natale Segreto</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Scopri chi è il tuo Babbo Natale Segreto!</h1>
+            <img src="res/christmas_hat.png" alt="Cappello di Natale" class="header-image">
+        </header>
+
+        <div class="input-container">
+            <input type="text" id="searchName" placeholder="Inserisci il tuo nome">
+            <button id="searchButton">Cerca</button>
+        </div>
+
+        <div class="result-container">
+            <p id="result">Scopri chi sei il Babbo Natale segreto!</p>
+        </div>
+
+        <footer>
+            <p style="color: red; font-weight: bold; font-style: italic;">🎄 Buone feste da tutti noi! 🎄</p>
+        </footer>
+    </div>
+<!--
+    <div class="snow-container">
+        <img src="res/snow.gif" alt="Neve che cade" class="snow-effect">
+    </div>
+-->
+
+    <script>
+        let decryptedData = null;
+
+        async function loadAndDecryptFile() {
+            const key = '0123456789abcdef'; // Chiave segreta usata per la crittografia
+            const encodedKey = new TextEncoder().encode(key);
+
+            try {
+                const response = await fetch('res/nomi.encrypted');
+                const encryptedData = await response.arrayBuffer();
+                const iv = new Uint8Array(encryptedData.slice(0, 16));
+                const ciphertext = encryptedData.slice(16);
+
+                const cryptoKey = await window.crypto.subtle.importKey(
+                    'raw',
+                    encodedKey,
+                    { name: 'AES-CBC' },
+                    false,
+                    ['decrypt']
+                );
+
+                const decryptedArrayBuffer = await window.crypto.subtle.decrypt(
+                    {
+                        name: 'AES-CBC',
+                        iv: iv
+                    },
+                    cryptoKey,
+                    ciphertext
+                );
+
+                decryptedData = new TextDecoder().decode(decryptedArrayBuffer);
+            } catch (error) {
+                console.error('Errore durante la decrittazione:', error);
+            }
+        }
+
+        window.onload = function() {
+            loadAndDecryptFile();
+        };
+
+        document.getElementById('searchButton').addEventListener('click', function() {
+            const searchName = document.getElementById('searchName').value.trim();
+
+            if (decryptedData && searchName) {
+                const rows = decryptedData.split('\n');
+                let found = false;
+
+                rows.forEach(row => {
+                    const [nameLeft, nameRight] = row.split(',');
+                    if (nameLeft.trim() === searchName) {
+                        document.getElementById('result').textContent = `Sei il Babbo Natale Segreto di ${nameRight.trim()}! 🎅`;
+                        found = true;
+                    }
+                });
+
+                if (!found) {
+                    document.getElementById('result').textContent = `Nome ${searchName} non trovato`;
+                }
+            } else {
+                document.getElementById('result').textContent = 'Inserisci un nome valido o verifica che il file sia stato decrittato correttamente!';
+            }
+        });
+    </script>
+</body>
+</html>
