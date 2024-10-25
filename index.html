@@ -1,26 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
-        <head>
-                <meta charset="UTF-8">
-                <meta name="author" content="Giova-Dev">
-                <link rel="stylesheet" href="index-style.css">
-<!--            <meta name="viewport" content="width=device-width" /> -->
-                <title>My Page</title>
-        </head>
-        <body>
-                <header>
-                        <h1>Hello World</h1>
-                        <nav id="main-links"> 
-                                <a href="game1.html" class="link">Game 1</a>
-                                <a href="game2.html" class="link">Game 2</a>
-                        </nav>
-                </header>
-                <div id="main">
-                        <p>I'm hosted with GitHub Pages.</p>
-                        <p>This page is a <i id="work">WORK IN PROGRESS</i>.<br>
-                        At the moment I am using it to learn Web Pages.</p>
-                        <div style="color: #00ff00"> Test </div>
-                </div>
-                
-        </body>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleziona Pagina</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #333;
+        }
+
+        .button-container {
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .btn:active {
+            background-color: #003f7f;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Seleziona una Pagina</h1>
+
+    <div class="button-container">
+        <!-- Primo tasto che manda a index_beta.html -->
+        <a href="index_beta.html" class="btn">Vai a index_beta</a>
+        
+        <!-- Secondo tasto che manda a BabboNatale/index.html -->
+        <a href="BabboNatale/index.html" class="btn">Scopri il BabboNatale Segreto</a>
+    </div>
+
+</body>
 </html>
