@@ -17,6 +17,11 @@ auth0.createAuth0Client({
       auth0Client.loginWithRedirect();
     });
   
+    const urlParams = new URLSearchParams(window.location.search);
+    console.log("State:", urlParams.get("state"));
+    console.log("Code:", urlParams.get("code"));
+    console.log("Error:", urlParams.get("error"));
+
     if (location.search.includes("state=") && 
         (location.search.includes("code=") || 
         location.search.includes("error="))) {
