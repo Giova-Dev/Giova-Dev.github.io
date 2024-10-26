@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Auth0</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+    <script src="auth.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Login con Auth0 n2</h1>
+        </header>
+        <div id="auth-container">
+            <button id="login-button">Accedi</button>
+        </div>
+        <div id="user-data-container" style="display: none;">
+            <h2>Informazioni Utente</h2>
+            <div id="user-data"></div>
+            <button id="logout-button" style="display: none;">Esci</button>
+        </div>
+        <div id="profile">
+
+        </div>
+    </div>
+    <script src="auth.js"></script>
+</body>
+</html>
