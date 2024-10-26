@@ -27,7 +27,7 @@ auth0.createAuth0Client({
             await auth0Client.handleRedirectCallback();
             window.history.replaceState({}, document.title, "/");
         } catch (error) {
-            console.error("Error handling redirect callback:", error);
+            console.log("Error handling redirect callback");
         }
     }
 
