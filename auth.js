@@ -1,15 +1,22 @@
+/*
+    domain: 'dev-8vae70bb4pd8od0b.us.auth0.com',
+    client_id: 'sGI9Rm6cKhNl0jhdvv2dRiHo0UScgn7V',
+*/
 document.addEventListener('DOMContentLoaded', async () => {
-    // Configura l'SDK con le credenziali di Auth0
     const auth0 = await createAuth0Client({
         domain: 'dev-8vae70bb4pd8od0b.us.auth0.com',
         client_id: 'sGI9Rm6cKhNl0jhdvv2dRiHo0UScgn7V',
-        cacheLocation: 'localstorage', // Persistenza
+        cacheLocation: 'localstorage', // O rimuovi se non necessario
     });
 
-    // Controlla se l'utente è autenticato
+    // Gestione del reindirizzamento post-login
+    if (window.location.search.includes('code=') || window.location.search.includes('error=')) {
+        await auth0.handleRedirectCallback();
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
     const isAuthenticated = await auth0.isAuthenticated();
-    
-    // Gestisce lo stato dell'autenticazione
+
     if (isAuthenticated) {
         const user = await auth0.getUser();
         document.getElementById('user-data').innerHTML = `
@@ -36,10 +43,4 @@ document.addEventListener('DOMContentLoaded', async () => {
             returnTo: window.location.origin
         });
     });
-
-    // Gestione del reindirizzamento post-login
-    if (window.location.search.includes('code=')) {
-        await auth0.handleRedirectCallback();
-        window.history.replaceState({}, document.title, '/');
-    }
 });
