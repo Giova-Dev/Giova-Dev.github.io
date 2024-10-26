@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+    <head>
+        <title>Sudoku</title>
+        <meta charset="UTF-8">
+        <script src="sudoku.js"></script>
+        <link rel="stylesheet" href="sudoku.css">
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body onload="disegna()">
+        <div class="container">
+            <table id="mainTable">
+
+            </table>
+            <button id="start" onclick="start()">START</button>
+        </div>
+        <div id="modalita">
+            <h2>Scegli la difficoltà:</h2>
+            <button onclick="chooseDifficulty(2)">Facile</button>
+            <button onclick="chooseDifficulty(1)">Media</button>
+            <button onclick="chooseDifficulty(0)">Difficile</button>
+        </div>
+        <div id="completato">
+            <h2 style="text-align: center;">Congratulazioni!!!</h2>
+        </div>
+
+    </body>
+</html>

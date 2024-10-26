@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="game1.css">
+        <title>Esercizio d'esame</title>
+    </head>
+    <body style="background-color: #ff00ff;">
+        <header>
+            <h1>Interactable Page</h1>
+            <nav id="main-links">
+                <a class="link" href="index.html">Home</a>
+            </nav>
+        </header>
+        <div id="container">
+            <table id="tabella">
+                <tr>
+                    <td>
+                        <button onclick="input(1)" class="box" id="cella1">
+                            
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="input(2)" class="box" id="cella2">
+                        
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="input(3)" class="box" id="cella3">
+                        
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button onclick="input(4)" class="box" id="cella4">
+    
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="input(5)" class="box" id="cella5">
+                        
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="input(6)" class="box" id="cella6">
+                        
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button onclick="input(7)" class="box" id="cella7">
+    
+                        </button>                
+                    </td>
+                    <td>
+                        <button onclick="input(8)" class="box" id="cella8">
+                        
+                        </button>             
+                    </td>
+                    <td>
+                        <button onclick="input(9)" class="box" id="cella9">
+                        
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <form id="myForm">
+            <button type="submit" id="start">Avvia</button>
+            </form>
+            <div style="margin: 40px; font-size:36px;">
+                Il tuo record è <div id="record"></div>
+            </div>
+        </div>
+        
+
+        <script>
+            var celle = [];
+            var vett = [];
+            var gameEnded = true;
+            var timer = 3;
+            var record = 0;
+            var curr_record = 0;
+
+            document.getElementById("myForm").addEventListener("submit", function() {
+                curr_record = 0;
+                event.preventDefault();
+                celle = [];
+                vett = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+                generaVettore();
+                stampaVettore();
+            });
+
+            function generaVettore() {
+                var numeri = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+                var i = 1;
+
+                while (numeri.length > 0) {
+                    var indiceCasuale = Math.floor(Math.random() * numeri.length);
+                    var numeroCasuale = numeri.splice(indiceCasuale, 1)[0];
+                    celle.push(numeroCasuale);
+                    vett[numeroCasuale] = i++; 
+                }
+            };
+
+            function stampaVettore(){
+                for(var i = 0; i < 9; i++){
+                    var cella = document.getElementById("cella" + (i + 1));
+                    cella.textContent = celle[i];
+                    cella.className = "box";
+                }
+
+
+                function startTimer(durationInSeconds) {
+                    setTimeout(function() {
+                        for(var i = 0; i < 9; i++){
+                            var cella = document.getElementById("cella" + (i + 1));
+                            cella.textContent = null;
+                        }
+                        gameEnded = false;
+                    }, durationInSeconds * 1000); // Converti i secondi in millisecondi
+                }
+
+                startTimer(timer);
+            };
+
+            function error(){
+                gameEnded = true;
+                if(record < curr_record){
+                    document.getElementById("record").textContent = curr_record;
+                    record = curr_record;
+                }
+            };
+
+            function victory(){
+                gameEnded = true;
+                if(record < curr_record){
+                    document.getElementById("record").textContent = curr_record;
+                    record = curr_record;
+                }
+            };
+
+            function input(n){
+                if(gameEnded == false && document.getElementById("cella" + n).className != "correct"){
+                    if(vett[1] == n){
+                        var current_cell;
+                        current_cell = document.getElementById("cella" + n);
+                        current_cell.className = "correct";
+                        vett.shift();
+                        curr_record++;
+                        if(record == 9)
+                            victory();
+                    }
+                    else{
+                        var current_cell;
+                        current_cell = document.getElementById("cella" + n);
+                        current_cell.className = "error";
+                        error();
+                    }
+                }
+            };
+            
+        </script>
+    </body>
+</html>

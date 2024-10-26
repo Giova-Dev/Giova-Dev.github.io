@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+<head>
+    
+    <style>
+        body{
+            display: grid;
+            grid-template-columns: 1.5fr 2fr;
+            grid-template-areas: "l r";
+            height: 100%;
+        }
+        
+        #inputArea{
+            grid-area: l;
+            background-color: yellow;
+            display: table;
+            margin: 10px;
+            padding: 30px;
+            height: 80vh;
+            position: relative;
+            margin-left: 50px;
+        }
+        .myRow {
+            display: table-row;
+            height: 15px;
+            position: relative;
+        } 
+        .myRow input, label, button{
+            padding: 5px;
+            margin: 5px;
+            display: table-cell; 
+        }
+        .myRow input{
+            width: 100px;
+        }
+        .myRow label{
+            text-align: center;
+        }
+        .myRow button{
+            position: absolute;
+            right: 50px;
+        }
+        .container {
+            grid-area: r;
+            position: relative;
+        } 
+        canvas {
+            border: 5px solid black;
+            padding: 2%;
+            width: 500px;
+            height: 500px;
+            position: absolute;
+            top: 50px;
+            right: 200px;
+        }
+    </style>
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('endecagonCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+            
+            //drawRegularEndecagon(ctx, canvasWidth / 2, canvasHeight / 2, 75);
+            
+            document.getElementById('inputForm').addEventListener('submit', function(event) {
+                event.prevendivefault();
+                
+                const inputs = [];
+                for (let i = 0; i <= 9; i++) {
+                    const input = parseFloat(document.getElementById(`input${i}`).value);
+                    if (isNaN(input)) {
+                        alert('Inserisci un numero valido per tutti i campi.');
+                        return;
+                    }
+                    inputs.push(input);
+                }
+                
+                drawEndecagon(ctx, inputs);
+            });
+        });
+        
+        
+        function drawRegularEndecagon(ctx, centerX, centerY, radius) {
+            ctx.beginPath();
+            for (let i = 0; i < 10; i++) {
+                const angle = (Math.PI / 2) + (Math.PI * 2) / 10 * i;
+                console.log("centerX: " + centerX + ", centerY: " + centerY);
+                const x = centerX + Math.cos(angle) * radius * 2;
+                const y = centerY + Math.sin(angle) * radius;
+                console.log("x: " + x + ", y: " + y);
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.closePath();
+            ctx.fillStyle = '#f0f0f0'; // Colore dello sfondo
+            ctx.fill();
+        }
+        
+        function drawEndecagon(ctx, inputs) {
+            const centerX = ctx.canvas.width / 2;
+            const centerY = ctx.canvas.height / 2;
+            
+            const radius = Math.min(centerX, centerY) * 0.8;
+            
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            
+            ctx.beginPath();
+            for (let i = 0; i < 10; i++) {
+                const angle = (Math.PI * 2) / 10 * i - (Math.PI / 2);
+                const proportion = inputs[i]/ 80;// Math.max(...inputs);
+                const x = centerX + Math.cos(angle) * radius * proportion * 2;
+                const y = centerY + Math.sin(angle) * radius * proportion;
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.closePath();
+            ctx.stroke();
+        }
+        
+    </script>
+</head>
+<body>
+    <div id="inputArea">
+        <div class="myRow">
+            <label for="input0">Velocità (km/h):</label>
+            <input type="number" id="input0" min="0" max="999" required>
+        </div>
+        <div class="myRow">
+            <label for="input1">Forza (N):</label>
+            <input type="number" id="input1" min="0" max="999" required>
+        </div>
+        <div class="myRow">
+            <label for="input2">udito (Hz):</label>
+            <input type="number" id="input2" min="0" max="999" required>
+        </div>
+        <div class="myRow">
+            <label for="input3">vista (decimi):</label>
+            <input type="number" id="input3" min="0" max="999" required>
+        </div>
+        <div class="myRow">
+            <label for="input4">tatto (fibre/cm):</label>
+            <input type="number" id="input4" min="0" max="999" required>
+        </div>   
+        <div class="myRow">
+            <label for="input5">olfatto (in geni):</label>
+            <input type="number" id="input5" min="0" max="999" required>
+        </div>
+        <div class="myRow">
+            <label for="input6">Corazza (psi):</label>
+            <input type="number" id="input6" min="0" max="999" required>
+        </div>         
+        <div class="myRow">
+            <label for="input7">Intelligenza (QE):</label>
+            <input type="number" id="input7" min="0" max="999" required>
+        </div>         
+        <div class="myRow">
+            <label for="input8">Dimensioni (m):</label>
+            <input type="number" id="input8" min="0" max="999" required>
+        </div>      
+        <div class="myRow">
+            <label for="input9">Abilità:</label>
+            <input type="number" id="input9" min="0" max="999" required>
+        </div>     
+        <div class="myRow">
+            <label for="input10">Peso (T):</label>
+            <input type="number" id="input10" min="0" max="999" required>
+        </div>   
+        <div class="myRow">
+            <label for="input11">Età Massima (year):</label>
+            <input type="number" id="input11" min="0" max="999" required>
+        </div>
+        <div class="myRow">
+            <label for="input12">Potenza Stretta (N):</label>
+            <input type="number" id="input12" min="0" max="999" required>
+        </div>
+        <div class="myRow">
+            <button onclick="calcola()">Calcola</button>
+        </div>
+    </div>
+    <div class="container">
+        <canvas id="endecagonCanvas"></canvas>
+    </div>
+</body>
+</html>
