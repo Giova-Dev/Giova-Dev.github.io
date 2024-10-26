@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const auth0 = await createAuth0Client({
         domain: 'dev-8vae70bb4pd8od0b.us.auth0.com',
         client_id: 'sGI9Rm6cKhNl0jhdvv2dRiHo0UScgn7V',
-        cacheLocation: 'localstorage', // O rimuovi se non necessario
     });
 
     // Gestione del reindirizzamento post-login
