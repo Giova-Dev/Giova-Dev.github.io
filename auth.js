@@ -16,7 +16,17 @@ auth0.createAuth0Client({
         e.preventDefault();
         auth0Client.loginWithRedirect();
     });
-    
+
+    if (location.search.includes("state=") && 
+        (location.search.includes("code=") || location.search.includes("error="))) {
+        try {
+            await auth0Client.handleRedirectCallback();
+            window.history.replaceState({}, document.title, "/");
+        } catch (error) {
+            console.error("Error handling redirect callback:", error);
+        }
+    }
+    /*
     const urlParams = new URLSearchParams(window.location.search);
     console.log("State:", urlParams.get("state"));
     console.log("Code:", urlParams.get("code"));
@@ -36,7 +46,7 @@ auth0.createAuth0Client({
         e.preventDefault();
         auth0Client.logout();
     });
-    
+    */
     const isAuthenticated = await auth0Client.isAuthenticated();
     const userProfile = isAuthenticated ? await auth0Client.getUser() : null;
     
