@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <p><strong>Nome:</strong> ${user.name || 'N/A'}</p>
             <p><strong>Email:</strong> ${user.email || 'N/A'}</p>
             <p><strong>Identificativo:</strong> ${user.sub || 'N/A'}</p>
-            <p><strong>Metadati Personalizzati:</strong> ${user['https://your-app-url.com/user'] || 'N/A'}</p>
+            <p><strong>Metadati Personalizzati:</strong> ${user['https://giova-dev.github.io/user'] || 'N/A'}</p>
             <p><strong>Avatar:</strong> <img src="${user.picture || ''}" alt="Avatar" style="width: 50px; height: 50px;" /></p>
         `;
     }
