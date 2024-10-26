@@ -52,11 +52,11 @@ auth0.createAuth0Client({
         `;
         loginButton.style.display = "none";
         logoutButton.style.display = "block";
-        userDataContainer.style.display = "none";
+        userDataContainer.style.display = "block";
     } else {
         profileElement.style.display = "none";
         loginButton.style.display = "block"; 
         logoutButton.style.display = "none"; 
-        userDataContainer.style.display = "block";
+        userDataContainer.style.display = "none";
     }
 });
