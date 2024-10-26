@@ -1,42 +1,22 @@
-const auth0 = (() => {
-    const domain = 'dev-8vae70bb4pd8od0b.us.auth0.com';
-    const clientId = 'sGI9Rm6cKhNl0jhdvv2dRiHo0UScgn7V';
-    const redirectUri = window.location.origin;
-    
-    return createAuth0Client({
-        domain,
-        client_id: clientId,
-        redirect_uri: redirectUri,
-    });
-})();
+let auth0;
 
-window.onload = async () => {
-    const isAuthenticated = await auth0.isAuthenticated();
-    
-    if (isAuthenticated) {
-        const user = await auth0.getUser();
-        updateUI(user);
-    }
-    
-    document.getElementById('login-button').addEventListener('click', async () => {
-        await auth0.loginWithRedirect();
-    });
-    
-    document.getElementById('logout-button').addEventListener('click', async () => {
-        await auth0.logout({ returnTo: window.location.origin });
-        updateUI(null);
+const initializeAuth0 = async () => {
+    auth0 = await createAuth0Client({
+        domain = 'dev-8vae70bb4pd8od0b.us.auth0.com',
+        clientId = 'sGI9Rm6cKhNl0jhdvv2dRiHo0UScgn7V',
+        redirect_uri: window.location.origin,
     });
 };
 
-function updateUI(user) {
+const updateUI = (user) => {
     const userDataContainer = document.getElementById('user-data-container');
     const userDataDiv = document.getElementById('user-data');
     const loginButton = document.getElementById('login-button');
     const logoutButton = document.getElementById('logout-button');
-    
+
     if (user) {
         userDataDiv.innerHTML = `
-        <pre>${JSON.stringify(user, null, 2)}</pre>
+            <pre>${JSON.stringify(user, null, 2)}</pre>
         `;
         userDataContainer.style.display = 'block';
         loginButton.style.display = 'none';
@@ -46,4 +26,23 @@ function updateUI(user) {
         loginButton.style.display = 'block';
         logoutButton.style.display = 'none';
     }
-}
+};
+
+window.onload = async () => {
+    await initializeAuth0();
+    const isAuthenticated = await auth0.isAuthenticated();
+
+    if (isAuthenticated) {
+        const user = await auth0.getUser();
+        updateUI(user);
+    }
+
+    document.getElementById('login-button').addEventListener('click', async () => {
+        await auth0.loginWithRedirect();
+    });
+
+    document.getElementById('logout-button').addEventListener('click', async () => {
+        await auth0.logout({ returnTo: window.location.origin });
+        updateUI(null);
+    });
+};
