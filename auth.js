@@ -10,7 +10,7 @@ auth0.createAuth0Client({
     }
   }).then(async (auth0Client) => {
     // Assumes a button with id "login" in the DOM
-    const loginButton = document.getElementById("login");
+    const loginButton = document.getElementById("login-button");
   
     loginButton.addEventListener("click", (e) => {
       e.preventDefault();
@@ -25,7 +25,7 @@ auth0.createAuth0Client({
     }
   
     // Assumes a button with id "logout" in the DOM
-    const logoutButton = document.getElementById("logout");
+    const logoutButton = document.getElementById("logout-button");
   
     logoutButton.addEventListener("click", (e) => {
       e.preventDefault();
