@@ -20,14 +20,17 @@ auth0.createAuth0Client({
 
     const isAuthenticated = await auth0Client.isAuthenticated();
     const userProfile = isAuthenticated ? await auth0Client.getUser() : null;
-/*    
+   
     if (location.search.includes("state=") && 
-    (location.search.includes("code=") || 
-    location.search.includes("error="))) {
-        await auth0Client.handleRedirectCallback();
-        window.history.replaceState({}, document.title, "/");
+        (location.search.includes("code=") || location.search.includes("error="))) {
+        try {
+            await auth0Client.handleRedirectCallback();
+            window.history.replaceState({}, document.title, "/");
+        } catch (error) {
+            console.error("Error handling redirect callback:", error);
+        }
     }
-*/
+
     // Assumes a button with id "logout" in the DOM
     const logoutButton = document.getElementById("logout-button");
     
@@ -36,7 +39,7 @@ auth0.createAuth0Client({
         auth0Client.logout();
     });
     
-    
+    const userDataContainer = document.getElementById("user-data-container");
     
     // Assumes an element with id "profile" in the DOM
     const profileElement = document.getElementById("profile");
@@ -48,10 +51,12 @@ auth0.createAuth0Client({
         <img src="${userProfile.picture}" />
         `;
         loginButton.style.display = "none";
-        logoutButton.style.display = "block"; 
+        logoutButton.style.display = "block";
+        userDataContainer.style.display = "none";
     } else {
         profileElement.style.display = "none";
         loginButton.style.display = "block"; 
         logoutButton.style.display = "none"; 
+        userDataContainer.style.display = "block";
     }
 });
