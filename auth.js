@@ -47,8 +47,10 @@ auth0.createAuth0Client({
     if (isAuthenticated) {
         profileElement.style.display = "block";
         profileElement.innerHTML = `
-        <p>${userProfile.name}</p>
-        <img src="${userProfile.picture}" />
+            <p>${userProfile.name}</p>
+            <p>${userProfile.email}</p>
+            <p>${userProfile.app_metadata}</p>
+            <img src="${userProfile.picture}" />
         `;
         loginButton.style.display = "none";
         logoutButton.style.display = "block";
