@@ -5,42 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Babbo Natale Segreto</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.18/auth0-spa-js.production.js"></script>
 </head>
 <body>
-    <audio autoplay loop>
-        <source src="res/All I Want For Christmas Is You-aicover.mp3" type="audio/mpeg">
-        Il tuo browser non supporta il tag audio.
-    </audio>
     <div class="container">
         <header>
             <h1>Scopri chi è il tuo Babbo Natale Segreto!</h1>
             <img src="res/christmas_hat.png" alt="Cappello di Natale" class="header-image">
         </header>
 
-        <div class="input-container">
-            <input type="text" id="searchName" placeholder="Inserisci il tuo nome">
-            <button id="searchButton">Cerca</button>
+        <!-- Pulsante di login iniziale -->
+        <div id="auth-container" class="input-container">
+            <button id="login-button">Login</button>
         </div>
 
-        <div class="result-container">
-            <p id="result">Scopri chi sei il Babbo Natale segreto!</p>
+        <!-- Sezione per la ricerca automatica dopo l'autenticazione -->
+        <div id="search-container" style="display: none;">
+            <div class="result-container">
+                <p id="result">Scopri chi sei il Babbo Natale segreto!</p>
+            </div>
+            <button id="logout-button" style="display: none;">Logout</button>
         </div>
 
         <footer>
             <p style="color: red; font-weight: bold; font-style: italic;">🎄 Buone feste da tutti noi! 🎄</p>
         </footer>
     </div>
-<!--
-    <div class="snow-container">
-        <img src="res/snow.gif" alt="Neve che cade" class="snow-effect">
-    </div>
--->
 
+    <script src="auth.js"></script>
     <script>
         let decryptedData = null;
 
         async function loadAndDecryptFile() {
-            const key = '0123456789abcdef'; // Chiave segreta usata per la crittografia
+            const key = '0123456789abcdef';
             const encodedKey = new TextEncoder().encode(key);
 
             try {
@@ -72,32 +69,30 @@
             }
         }
 
-        window.onload = function() {
-            loadAndDecryptFile();
-        };
-
-        document.getElementById('searchButton').addEventListener('click', function() {
-            const searchName = document.getElementById('searchName').value.trim();
-
-            if (decryptedData && searchName) {
+        async function searchByName(name) {
+            if (decryptedData && name) {
                 const rows = decryptedData.split('\n');
                 let found = false;
 
                 rows.forEach(row => {
                     const [nameLeft, nameRight] = row.split(',');
-                    if (nameLeft.trim() === searchName) {
+                    if (nameLeft.trim() === name) {
                         document.getElementById('result').textContent = `Sei il Babbo Natale Segreto di ${nameRight.trim()}! 🎅`;
                         found = true;
                     }
                 });
 
                 if (!found) {
-                    document.getElementById('result').textContent = `Nome ${searchName} non trovato`;
+                    document.getElementById('result').textContent = `Nome ${name} non trovato`;
                 }
             } else {
-                document.getElementById('result').textContent = 'Inserisci un nome valido o verifica che il file sia stato decrittato correttamente!';
+                document.getElementById('result').textContent = 'Errore durante la ricerca. Riprova!';
             }
-        });
+        }
+
+        window.onload = function() {
+            loadAndDecryptFile();
+        };
     </script>
 </body>
 </html>
