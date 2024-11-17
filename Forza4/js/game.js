@@ -100,6 +100,7 @@ function cellaCliccata(event){
 
 
 function cercaCombinazione(pos, player_){
+    console.clear();
     let win = false;
 
     const currRow = Math.floor(pos / NUM_COL);
@@ -108,6 +109,7 @@ function cercaCombinazione(pos, player_){
     // orizzontale
     let x = currRow * NUM_COL;      // x coordinata della prima cella della riga 
     let consecutive = 0;
+    
     while(x < (currRow * NUM_COL + NUM_COL) && !win){      
         if(document.getElementById(x).classList.contains(PLAYER(player_))){
             consecutive++;
@@ -120,9 +122,12 @@ function cercaCombinazione(pos, player_){
         x++;
     }
 
+    
+
     //verticale
     let y = currCol;                // y coordinata della prima cella della colonna 
     consecutive = 0;
+
     while(y < (NUM_COL * NUM_ROW - currCol) && !win){   
         if(document.getElementById(y).classList.contains(PLAYER(player_))){
             consecutive++;
@@ -140,11 +145,14 @@ function cercaCombinazione(pos, player_){
     let start = diagonaleAltoSx(pos);
     let row_ = Math.floor(start / NUM_COL);
     let col_ = start % NUM_COL;
+    consecutive = 0;
+
     while(row_ < NUM_ROW && col_ < NUM_COL && !win){
         const cellId = (row_ * NUM_COL + col_);
-        
+        console.log("Cerco in cella (", row_, ", ", col_, ")");
         if (document.getElementById(cellId).classList.contains(PLAYER(player_))) {
             consecutive++;
+            console.log("TROVATO");
             if (consecutive == 4) {
                 win = true;
                 break;
@@ -153,16 +161,18 @@ function cercaCombinazione(pos, player_){
             consecutive = 0;
         }
 
+        console.log("Consecutivi: ", consecutive);
         // Avanza lungo la diagonale basso-dx
         row_++;
         col_++;
     }
 
     //diagonale alto-dx => basso-sx
-    consecutive = 0;
     start = diagonaleAltoDx(pos);
     row_ = Math.floor(start / NUM_COL);
     col_ = start % NUM_COL;
+    consecutive = 0;
+
     while(row_ < NUM_ROW && col_ >= 0 && !win){
         const cellId = (row_ * NUM_COL + col_);
         

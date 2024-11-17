@@ -49,7 +49,6 @@ auth0.createAuth0Client({
     const targetDate = new Date('December 1, 2024 00:00:00');
     const waiterElement = document.getElementById("waiter");
     
-    
     if (isAuthenticated) {
         profileElement.style.display = "block";
         /*
@@ -109,3 +108,13 @@ function updateCountdown() {
 function startCountdown() {
     setInterval(updateCountdown, 1000);
 }
+
+
+// BACKGROUND MUSIC
+function inizializza(){
+    var audio = new Audio("res/All I Want For Christmas Is You.mp3");
+    audio.play();
+    audio.loop = true;
+}
+
+document.addEventListener("click", inizializza);
