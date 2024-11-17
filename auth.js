@@ -43,6 +43,12 @@ auth0.createAuth0Client({
     
     // Assumes an element with id "profile" in the DOM
     const profileElement = document.getElementById("profile");
+
+    // Avvia il conto alla rovescia
+    const now = new Date();
+    const targetDate = new Date('December 1, 2024 00:00:00');
+    const waiterElement = document.getElementById("waiter");
+    
     
     if (isAuthenticated) {
         profileElement.style.display = "block";
@@ -54,9 +60,18 @@ auth0.createAuth0Client({
             <img src="${userProfile.picture}" />
         `;
         */
+
+        if(now < targetDate){
+            userDataContainer.style.display = "none";
+            waiterElement.style.display = "block";
+            startCountdown();
+        } else{
+            userDataContainer.style.display = "block";
+            waiterElement.style.display = "none";
+        }
         loginButton.style.display = "none";
         logoutButton.style.display = "block";
-        userDataContainer.style.display = "block";
+        
 
         searchByName(userProfile.name);
 
@@ -65,5 +80,32 @@ auth0.createAuth0Client({
         loginButton.style.display = "block"; 
         logoutButton.style.display = "none"; 
         userDataContainer.style.display = "none";
+        waiterElement.style.display = "none";
     }
 });
+
+
+// Funzione per calcolare e visualizzare il conto alla rovescia
+function updateCountdown() {
+    const now = new Date();
+    const targetDate = new Date('December 1, 2024 00:00:00'); // Data dell'estrazione
+    const timeDifference = targetDate - now;
+
+    if (timeDifference > 0) {
+        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+        document.getElementById('waiter').innerHTML = `
+            <p>Mancano <strong>${days}</strong> giorni <strong>${hours}</strong> ore <strong>${minutes}</strong> minuti <strong>${seconds}</strong> secondi all'estrazione!</p>
+        `;
+    } else {
+        document.getElementById('waiter').innerHTML = "<p>È arrivato il momento! 🎉</p>";
+    }
+}
+
+// Funzione per avviare il conto alla rovescia ogni secondo
+function startCountdown() {
+    setInterval(updateCountdown, 1000);
+}
