@@ -46,7 +46,7 @@ auth0.createAuth0Client({
 
     // Avvia il conto alla rovescia
     const now = new Date();
-    const targetDate = new Date('December 1, 2024 00:00:00');
+    const targetDate = new Date('November 1, 2024 00:00:00');
     const waiterElement = document.getElementById("waiter");
     
     if (isAuthenticated) {
