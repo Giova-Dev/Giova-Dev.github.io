@@ -206,7 +206,22 @@
                 }, i * 50);
             }
         }
-        
+
+        function inviaNotificaPushbullet(titolo, messaggio) {
+    fetch("https://api.pushbullet.com/v2/pushes", {
+        method: "POST",
+        headers: {
+            "Access-Token": "o.0bmps7YsffAWhPJLjlKB6vfC88kzZ4eJ",  // <-- sostituisci con la tua chiave
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            type: "note",
+            title: titolo,
+            body: messaggio
+        })
+    }).catch(err => console.error("Errore invio notifica:", err));
+}
+
         // Mostra messaggio "Risposta Sbagliata" temporaneo
         function showWrongAnswer() {
             const wrongAnswer = document.getElementById("wrongAnswer");
@@ -221,30 +236,42 @@
         
         // Gestisci i pulsanti
         document.getElementById("yesBtn").addEventListener("click", function() {
-            document.getElementById("responseYes").classList.remove("hidden");
-            document.getElementById("responseNo").classList.add("hidden");
-            
-            // Esplosione di cuori
-            heartExplosion();
-        });
-        
-        document.getElementById("noBtn").addEventListener("click", function() {
-            document.getElementById("responseNo").classList.remove("hidden");
-            document.getElementById("responseYes").classList.add("hidden");
-            
-            // Mostra "Risposta Sbagliata"
-            showWrongAnswer();
-            
-            // Crea qualche cuore triste
-            for(let i = 0; i < 10; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement("div");
-                    heart.innerHTML = "💔";
-                    heart.className = "heart";
-                    heart.style.left = Math.random() * 100 + "vw";
-                    heart.style.top = Math.random() * 100 + "vh";
-                    heart.style.fontSize = (Math.random() * 20 + 15) + "px";
-                    heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+    document.getElementById("responseYes").classList.remove("hidden");
+    document.getElementById("responseNo").classList.add("hidden");
+
+    heartExplosion();
+
+    // Notifica Pushbullet
+    inviaNotificaPushbullet("💖 Ha detto SÌ!", userName + " è libera domani! 🎉");
+});
+
+document.getElementById("noBtn").addEventListener("click", function() {
+    document.getElementById("responseNo").classList.remove("hidden");
+    document.getElementById("responseYes").classList.add("hidden");
+
+    showWrongAnswer();
+
+    // Cuori tristi
+    for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+            const heart = document.createElement("div");
+            heart.innerHTML = "💔";
+            heart.className = "heart";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.top = Math.random() * 100 + "vh";
+            heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+            heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }, i * 200);
+    }
+
+    // Notifica Pushbullet
+    inviaNotificaPushbullet("😢 Ha detto NO", userName + " non è libera domani...");
+});() * 3 + 2 + "s";
                     document.body.appendChild(heart);
                     
                     setTimeout(() => {
