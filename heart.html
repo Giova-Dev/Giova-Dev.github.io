@@ -110,6 +110,38 @@
                 transform: translateY(-15px);
             }
         }
+        
+        .wrong-answer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            font-size: 5rem;
+            color: white;
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% {transform: translateX(0);}
+            10%, 30%, 50%, 70%, 90% {transform: translateX(-10px);}
+            20%, 40%, 60%, 80% {transform: translateX(10px);}
+        }
+        
+        .heart-explosion {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
     </style>
 </head>
 <body>
@@ -125,53 +157,101 @@
         <div id="responseNo" class="response hidden">😢 Peccato... spero a presto allora! 😊</div>
     </div>
     
+    <div id="wrongAnswer" class="hidden">RISPOSTA SBAGLIATA!</div>
+    <div id="heartExplosion" class="heart-explosion"></div>
+    
     <script>
         // Chiedi il nome all'utente
         const userName = "Miri💖";
         document.getElementById("name").textContent = userName;
         
         // Crea cuori animati
-        function createHearts() {
-            const heart = document.createElement("div");
-            heart.innerHTML = "❤";
-            heart.className = "heart";
-            
-            // Posizione casuale
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.top = Math.random() * 100 + "vh";
-            
-            // Dimensione casuale
-            const size = Math.random() * 20 + 10;
-            heart.style.fontSize = size + "px";
-            
-            // Durata animazione casuale
-            heart.style.animationDuration = Math.random() * 3 + 2 + "s";
-            
-            document.body.appendChild(heart);
-            
-            // Rimuovi il cuore dopo l'animazione
-            setTimeout(() => {
-                heart.remove();
-            }, 5000);
+        function createHearts(count = 1, large = false) {
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement("div");
+                heart.innerHTML = "❤";
+                heart.className = "heart";
+                
+                // Posizione casuale
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.top = Math.random() * 100 + "vh";
+                
+                // Dimensione casuale
+                const size = large ? (Math.random() * 30 + 20) : (Math.random() * 20 + 10);
+                heart.style.fontSize = size + "px";
+                
+                // Durata animazione casuale
+                heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+                
+                document.body.appendChild(heart);
+                
+                // Rimuovi il cuore dopo l'animazione
+                setTimeout(() => {
+                    heart.remove();
+                }, 5000);
+            }
         }
         
         // Crea cuori ogni 300ms
         setInterval(createHearts, 300);
+        
+        // Funzione per l'esplosione di cuori
+        function heartExplosion() {
+            const explosion = document.getElementById("heartExplosion");
+            explosion.innerHTML = '';
+            
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    createHearts(5, true);
+                }, i * 50);
+            }
+        }
+        
+        // Mostra messaggio "Risposta Sbagliata" temporaneo
+        function showWrongAnswer() {
+            const wrongAnswer = document.getElementById("wrongAnswer");
+            wrongAnswer.classList.remove("hidden");
+	    wrongAnswer.classList.add("wrong-answer");
+            
+            setTimeout(() => {
+                wrongAnswer.classList.add("hidden");
+		wrongAnswer.classList.remove("wrong-answer");
+            }, 1500);
+        }
         
         // Gestisci i pulsanti
         document.getElementById("yesBtn").addEventListener("click", function() {
             document.getElementById("responseYes").classList.remove("hidden");
             document.getElementById("responseNo").classList.add("hidden");
             
-            // Aumenta i cuori quando dice sì
-            for(let i = 0; i < 20; i++) {
-                setTimeout(createHearts, i * 100);
-            }
+            // Esplosione di cuori
+            heartExplosion();
         });
         
         document.getElementById("noBtn").addEventListener("click", function() {
             document.getElementById("responseNo").classList.remove("hidden");
             document.getElementById("responseYes").classList.add("hidden");
+            
+            // Mostra "Risposta Sbagliata"
+            showWrongAnswer();
+            
+            // Crea qualche cuore triste
+            for(let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement("div");
+                    heart.innerHTML = "💔";
+                    heart.className = "heart";
+                    heart.style.left = Math.random() * 100 + "vw";
+                    heart.style.top = Math.random() * 100 + "vh";
+                    heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+                    heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 5000);
+                }, i * 200);
+            }
         });
     </script>
 </body>
