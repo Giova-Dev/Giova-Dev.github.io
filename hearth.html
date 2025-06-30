@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,13 +17,13 @@
             overflow: hidden;
             flex-direction: column;
         }
-        
+
         .container {
             text-align: center;
             position: relative;
             z-index: 10;
         }
-        
+
         h1 {
             color: #e91e63;
             font-size: 3rem;
@@ -30,17 +31,17 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
             animation: pulse 1.5s infinite;
         }
-        
+
         .name {
             color: #c2185b;
             font-weight: bold;
             text-decoration: underline;
         }
-        
+
         .buttons {
             margin-top: 2rem;
         }
-        
+
         button {
             background-color: #e91e63;
             color: white;
@@ -53,44 +54,49 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        
+
         button:hover {
             transform: scale(1.1);
             background-color: #c2185b;
         }
-        
+
         .heart {
             position: absolute;
             pointer-events: none;
             animation: float 4s ease-in-out infinite;
             opacity: 0.7;
         }
-        
+
         @keyframes float {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0) rotate(0deg);
             }
+
             50% {
                 transform: translateY(-20px) rotate(10deg);
             }
         }
-        
+
         @keyframes pulse {
             0% {
                 transform: scale(1);
             }
+
             50% {
                 transform: scale(1.05);
             }
+
             100% {
                 transform: scale(1);
             }
         }
-        
+
         .hidden {
             display: none;
         }
-        
+
         .response {
             font-size: 2rem;
             margin-top: 2rem;
@@ -98,19 +104,26 @@
             font-weight: bold;
             animation: bounce 0.5s;
         }
-        
+
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
                 transform: translateY(0);
             }
+
             40% {
                 transform: translateY(-30px);
             }
+
             60% {
                 transform: translateY(-15px);
             }
         }
-        
+
         .wrong-answer {
             position: fixed;
             top: 0;
@@ -126,13 +139,30 @@
             color: white;
             animation: shake 0.5s;
         }
-        
+
         @keyframes shake {
-            0%, 100% {transform: translateX(0);}
-            10%, 30%, 50%, 70%, 90% {transform: translateX(-10px);}
-            20%, 40%, 60%, 80% {transform: translateX(10px);}
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            10%,
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: translateX(-10px);
+            }
+
+            20%,
+            40%,
+            60%,
+            80% {
+                transform: translateX(10px);
+            }
         }
-        
+
         .heart-explosion {
             position: fixed;
             top: 0;
@@ -144,62 +174,63 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Ei <span class="name" id="name">NOME</span>, sei libera domani?</h1>
-        
+
         <div class="buttons">
             <button id="yesBtn">Sì! 😊</button>
             <button id="noBtn">No 😢</button>
         </div>
-        
+
         <div id="responseYes" class="response hidden">💖 Fantastico! Ci vediamo domani allora! 💖</div>
         <div id="responseNo" class="response hidden">😢 Peccato... spero a presto allora! 😊</div>
     </div>
-    
+
     <div id="wrongAnswer" class="hidden">RISPOSTA SBAGLIATA!</div>
     <div id="heartExplosion" class="heart-explosion"></div>
-    
+
     <script>
         // Chiedi il nome all'utente
         const userName = "Miri💖";
         document.getElementById("name").textContent = userName;
-        
+
         // Crea cuori animati
         function createHearts(count = 1, large = false) {
             for (let i = 0; i < count; i++) {
                 const heart = document.createElement("div");
                 heart.innerHTML = "❤";
                 heart.className = "heart";
-                
+
                 // Posizione casuale
                 heart.style.left = Math.random() * 100 + "vw";
                 heart.style.top = Math.random() * 100 + "vh";
-                
+
                 // Dimensione casuale
                 const size = large ? (Math.random() * 30 + 20) : (Math.random() * 20 + 10);
                 heart.style.fontSize = size + "px";
-                
+
                 // Durata animazione casuale
                 heart.style.animationDuration = Math.random() * 3 + 2 + "s";
-                
+
                 document.body.appendChild(heart);
-                
+
                 // Rimuovi il cuore dopo l'animazione
                 setTimeout(() => {
                     heart.remove();
                 }, 5000);
             }
         }
-        
+
         // Crea cuori ogni 300ms
         setInterval(createHearts, 300);
-        
+
         // Funzione per l'esplosione di cuori
         function heartExplosion() {
             const explosion = document.getElementById("heartExplosion");
             explosion.innerHTML = '';
-            
+
             for (let i = 0; i < 100; i++) {
                 setTimeout(() => {
                     createHearts(5, true);
@@ -207,73 +238,65 @@
             }
         }
 
-        function inviaNotificaPushbullet(titolo, messaggio) {
-    fetch("https://api.pushbullet.com/v2/pushes", {
-        method: "POST",
-        headers: {
-            "Access-Token": "o.0bmps7YsffAWhPJLjlKB6vfC88kzZ4eJ",  // <-- sostituisci con la tua chiave
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            type: "note",
-            title: titolo,
-            body: messaggio
-        })
-    }).catch(err => console.error("Errore invio notifica:", err));
-}
-
         // Mostra messaggio "Risposta Sbagliata" temporaneo
         function showWrongAnswer() {
             const wrongAnswer = document.getElementById("wrongAnswer");
             wrongAnswer.classList.remove("hidden");
-	    wrongAnswer.classList.add("wrong-answer");
-            
+            wrongAnswer.classList.add("wrong-answer");
+
             setTimeout(() => {
                 wrongAnswer.classList.add("hidden");
-		wrongAnswer.classList.remove("wrong-answer");
+                wrongAnswer.classList.remove("wrong-answer");
             }, 1500);
         }
-        
+
+        function inviaNotificaPushbullet(titolo, messaggio) {
+            fetch("https://api.pushbullet.com/v2/pushes", {
+                method: "POST",
+                headers: {
+                    "Access-Token": "o.0bmps7YsffAWhPJLjlKB6vfC88kzZ4eJ",  // <-- sostituisci con la tua chiave
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    type: "note",
+                    title: titolo,
+                    body: messaggio
+                })
+            }).catch(err => console.error("Errore invio notifica:", err));
+        }
+
         // Gestisci i pulsanti
-        document.getElementById("yesBtn").addEventListener("click", function() {
-    document.getElementById("responseYes").classList.remove("hidden");
-    document.getElementById("responseNo").classList.add("hidden");
+        document.getElementById("yesBtn").addEventListener("click", function () {
+            document.getElementById("responseYes").classList.remove("hidden");
+            document.getElementById("responseNo").classList.add("hidden");
 
-    heartExplosion();
+            // Esplosione di cuori
+            heartExplosion();
+            inviaNotificaPushbullet("💖 Ha detto SÌ!", userName + " è libera domani! 🎉");
 
-    // Notifica Pushbullet
-    inviaNotificaPushbullet("💖 Ha detto SÌ!", userName + " è libera domani! 🎉");
-});
+        });
 
-document.getElementById("noBtn").addEventListener("click", function() {
-    document.getElementById("responseNo").classList.remove("hidden");
-    document.getElementById("responseYes").classList.add("hidden");
+        document.getElementById("noBtn").addEventListener("click", function () {
+            document.getElementById("responseNo").classList.remove("hidden");
+            document.getElementById("responseYes").classList.add("hidden");
 
-    showWrongAnswer();
+            // Mostra "Risposta Sbagliata"
+            showWrongAnswer();
 
-    // Cuori tristi
-    for (let i = 0; i < 10; i++) {
-        setTimeout(() => {
-            const heart = document.createElement("div");
-            heart.innerHTML = "💔";
-            heart.className = "heart";
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.top = Math.random() * 100 + "vh";
-            heart.style.fontSize = (Math.random() * 20 + 15) + "px";
-            heart.style.animationDuration = Math.random() * 3 + 2 + "s";
-            document.body.appendChild(heart);
+            inviaNotificaPushbullet("😢 Ha detto NO", userName + " non è libera domani...");
 
-            setTimeout(() => {
-                heart.remove();
-            }, 5000);
-        }, i * 200);
-    }
-
-    // Notifica Pushbullet
-    inviaNotificaPushbullet("😢 Ha detto NO", userName + " non è libera domani...");
-});() * 3 + 2 + "s";
+            // Crea qualche cuore triste
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement("div");
+                    heart.innerHTML = "💔";
+                    heart.className = "heart";
+                    heart.style.left = Math.random() * 100 + "vw";
+                    heart.style.top = Math.random() * 100 + "vh";
+                    heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+                    heart.style.animationDuration = Math.random() * 3 + 2 + "s";
                     document.body.appendChild(heart);
-                    
+
                     setTimeout(() => {
                         heart.remove();
                     }, 5000);
@@ -282,4 +305,3 @@ document.getElementById("noBtn").addEventListener("click", function() {
         });
     </script>
 </body>
-</html>
