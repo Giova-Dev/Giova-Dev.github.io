@@ -9,17 +9,18 @@
       background-color: #b30000;
       overflow: hidden;
       font-family: 'Comic Sans MS', cursive, sans-serif;
-      color: white;
       text-align: center;
     }
 
     #countdown {
       font-size: 3em;
       margin-top: 50px;
+      color: white;
       z-index: 2;
       position: relative;
     }
 
+    /* Cuori rossi fluttuanti */
     .heart {
       width: 20px;
       height: 20px;
@@ -27,6 +28,7 @@
       position: absolute;
       transform: rotate(45deg);
       animation: float 6s infinite ease-in-out;
+      z-index: 1;
     }
 
     .heart::before,
@@ -60,13 +62,56 @@
       }
     }
 
+    /* Cuori colorati coreografici */
+    .dancing-heart {
+      position: absolute;
+      width: var(--size, 30px);
+      height: var(--size, 30px);
+      background-color: var(--color, pink);
+      transform: rotate(45deg);
+      animation: dance 4s infinite ease-in-out;
+      z-index: 1;
+    }
+
+    .dancing-heart::before,
+    .dancing-heart::after {
+      content: '';
+      width: 100%;
+      height: 100%;
+      background-color: inherit;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .dancing-heart::before {
+      top: -50%;
+      left: 0;
+    }
+
+    .dancing-heart::after {
+      left: -50%;
+      top: 0;
+    }
+
+    @keyframes dance {
+      0%, 100% {
+        transform: translateY(0) rotate(45deg);
+      }
+      50% {
+        transform: translateY(-20px) rotate(45deg);
+      }
+    }
+
+    /* Messaggio finale */
     #message {
       display: none;
-      font-size: 4em;
-      color: #ffcccc;
-      text-shadow: 2px 2px 5px #ff0000;
+      font-size: 6em;
+      color: yellow;
+      text-shadow: 3px 3px 10px #ff0000;
       margin-top: 100px;
       animation: pop-in 2s ease forwards;
+      z-index: 3;
+      position: relative;
     }
 
     @keyframes pop-in {
@@ -93,6 +138,7 @@
       width: 100px;
       bottom: 0;
       animation: pop 1s ease-out forwards;
+      z-index: 2;
     }
 
     .left-bottle {
@@ -124,8 +170,7 @@
     const champagneLeft = document.querySelector(".left-bottle");
     const champagneRight = document.querySelector(".right-bottle");
 
-    // Data target: 11 luglio di quest'anno alle 00:00
-    const targetDate = new Date(new Date().getFullYear(), 6, 11); // Mese 6 = luglio
+    const targetDate = new Date(new Date().getFullYear(), 6, 11);
 
     function updateCountdown() {
       const now = new Date();
@@ -149,7 +194,7 @@
     const interval = setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Cuori danzanti
+    // Cuori rossi fluttuanti
     function createHeart() {
       const heart = document.createElement('div');
       heart.classList.add('heart');
@@ -160,16 +205,29 @@
     }
     setInterval(createHeart, 200);
 
-    // Confetti JS (lib leggera)
+    // Cuori colorati coreografici
+    const colors = ['#ff66cc', '#ffcc00', '#66ff66', '#66ccff', '#ff6666'];
+    for (let i = 0; i < 20; i++) {
+      const heart = document.createElement('div');
+      heart.classList.add('dancing-heart');
+      const size = 20 + Math.random() * 30;
+      heart.style.setProperty('--size', `${size}px`);
+      heart.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
+      heart.style.left = `${Math.random() * 100}%`;
+      heart.style.top = `${Math.random() * 100}%`;
+      heart.style.animationDelay = `${Math.random() * 4}s`;
+      document.body.appendChild(heart);
+    }
+
+    // Celebrazione
     function startCelebration() {
       champagneLeft.style.display = 'block';
       champagneRight.style.display = 'block';
-
       messageEl.style.display = 'block';
       startConfetti();
     }
 
-    // Confetti animation
+    // Confetti
     const canvas = document.getElementById("confetti-canvas");
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
@@ -178,7 +236,7 @@
     let confetti = [];
 
     function randomColor() {
-      const colors = ["#ff6666", "#ffcccc", "#ffffff", "#ff0000"];
+      const colors = ["#ff6666", "#ffcccc", "#ffffff", "#ff0000", "#ffff00"];
       return colors[Math.floor(Math.random() * colors.length)];
     }
 
