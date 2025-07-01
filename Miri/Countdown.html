@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Countdown Compleanno</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #b30000;
+      overflow: hidden;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      color: white;
+      text-align: center;
+    }
+
+    #countdown {
+      font-size: 3em;
+      margin-top: 50px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .heart {
+      width: 20px;
+      height: 20px;
+      background: red;
+      position: absolute;
+      transform: rotate(45deg);
+      animation: float 6s infinite ease-in-out;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: '';
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    #message {
+      display: none;
+      font-size: 4em;
+      color: #ffcccc;
+      text-shadow: 2px 2px 5px #ff0000;
+      margin-top: 100px;
+      animation: pop-in 2s ease forwards;
+    }
+
+    @keyframes pop-in {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    canvas.confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .champagne {
+      position: absolute;
+      width: 100px;
+      bottom: 0;
+      animation: pop 1s ease-out forwards;
+    }
+
+    .left-bottle {
+      left: 20%;
+    }
+
+    .right-bottle {
+      right: 20%;
+    }
+
+    @keyframes pop {
+      0% { transform: translateY(100%); }
+      100% { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="countdown">Caricamento...</div>
+  <div id="message">🎉 Buon Compleanno +19 🎉</div>
+
+  <canvas class="confetti" id="confetti-canvas"></canvas>
+  <img src="https://i.imgur.com/TbyoMMP.png" class="champagne left-bottle" style="display:none;">
+  <img src="https://i.imgur.com/TbyoMMP.png" class="champagne right-bottle" style="display:none;">
+
+  <script>
+    const countdownEl = document.getElementById("countdown");
+    const messageEl = document.getElementById("message");
+    const champagneLeft = document.querySelector(".left-bottle");
+    const champagneRight = document.querySelector(".right-bottle");
+
+    // Data target: 11 luglio di quest'anno alle 00:00
+    const targetDate = new Date(new Date().getFullYear(), 6, 11); // Mese 6 = luglio
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        clearInterval(interval);
+        countdownEl.style.display = "none";
+        startCelebration();
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      countdownEl.textContent = `${days}g ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    const interval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // Cuori danzanti
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = `${Math.random() * 100}%`;
+      heart.style.animationDuration = `${3 + Math.random() * 3}s`;
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+    setInterval(createHeart, 200);
+
+    // Confetti JS (lib leggera)
+    function startCelebration() {
+      champagneLeft.style.display = 'block';
+      champagneRight.style.display = 'block';
+
+      messageEl.style.display = 'block';
+      startConfetti();
+    }
+
+    // Confetti animation
+    const canvas = document.getElementById("confetti-canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let confetti = [];
+
+    function randomColor() {
+      const colors = ["#ff6666", "#ffcccc", "#ffffff", "#ff0000"];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function createConfettiPiece() {
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 6 + 4,
+        d: Math.random() * 100,
+        color: randomColor(),
+        tilt: Math.floor(Math.random() * 10) - 10,
+        tiltAngle: 0
+      };
+    }
+
+    function startConfetti() {
+      for (let i = 0; i < 150; i++) {
+        confetti.push(createConfettiPiece());
+      }
+      requestAnimationFrame(drawConfetti);
+    }
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < confetti.length; i++) {
+        const p = confetti[i];
+        ctx.beginPath();
+        ctx.lineWidth = p.r;
+        ctx.strokeStyle = p.color;
+        ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+        ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+        ctx.stroke();
+      }
+      updateConfetti();
+      requestAnimationFrame(drawConfetti);
+    }
+
+    function updateConfetti() {
+      for (let i = 0; i < confetti.length; i++) {
+        const p = confetti[i];
+        p.y += Math.cos(p.d) + 3;
+        p.x += Math.sin(p.d);
+        p.tiltAngle += 0.1;
+        p.tilt = Math.sin(p.tiltAngle) * 15;
+
+        if (p.y > canvas.height) {
+          confetti[i] = createConfettiPiece();
+        }
+      }
+    }
+  </script>
+</body>
+</html>
