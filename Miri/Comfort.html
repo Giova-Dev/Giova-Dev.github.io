@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Heartfelt Comfort</title>
+  <style>
+    body {
+      background-color: #ffe6e6;
+      color: #800000;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #b30000;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.4em;
+      max-width: 600px;
+      margin: 0 auto 40px auto;
+      line-height: 1.6;
+    }
+
+    .hearts {
+      font-size: 2em;
+      animation: float 3s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+
+    .heart {
+      display: inline-block;
+      margin: 0 10px;
+      color: #ff1a66;
+    }
+
+    .hug {
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .hug:hover {
+      background-color: #e60000;
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts">
+    <span class="heart">❤️</span>
+    <span class="heart">💖</span>
+    <span class="heart">💕</span>
+    <span class="heart">💞</span>
+    <span class="heart">💗</span>
+  </div>
+
+  <h1>You’re Not Alone</h1>
+
+  <p>
+    Sometimes things don’t go as planned, and that’s okay.<br>
+    You’re loved, appreciated, and stronger than you think.<br>
+    Take a deep breath. This moment will pass. And I’m here for you. ❤️
+  </p>
+
+  <button class="hug" onclick="alert('💌 Sending you a big virtual hug!')">
+    Send Me a Hug
+  </button>
+
+  <div class="hearts" style="margin-top: 50px;">
+    <span class="heart">💓</span>
+    <span class="heart">💝</span>
+    <span class="heart">💘</span>
+    <span class="heart">❤️</span>
+    <span class="heart">💞</span>
+  </div>
+</body>
+</html>
