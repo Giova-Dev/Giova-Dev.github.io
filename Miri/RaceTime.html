@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Buona Fortuna per la Gara!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #e0f7fa, #ffffff);
+      font-family: 'Segoe UI', sans-serif;
+      color: #1a237e;
+      text-align: center;
+    }
+
+    header {
+      background: #ffd600;
+      padding: 20px 0;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5em;
+      color: #d32f2f;
+    }
+
+    .olympic-rings {
+      margin: 20px auto;
+      width: 240px;
+    }
+
+    .olympic-rings div {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid;
+      border-radius: 50%;
+      margin: 5px;
+    }
+
+    .blue { border-color: #0085C7; }
+    .black { border-color: #000000; }
+    .red { border-color: #DF0024; }
+    .yellow { border-color: #F4C300; margin-left: 25px; }
+    .green { border-color: #009F3D; }
+
+    .message {
+      margin-top: 30px;
+      font-size: 1.8em;
+      padding: 0 20px;
+    }
+
+    .track {
+      margin: 40px auto;
+      width: 80%;
+      max-width: 700px;
+      height: 200px;
+      background: repeating-linear-gradient(
+        to bottom,
+        #d50000,
+        #d50000 30px,
+        #ffffff 30px,
+        #ffffff 35px
+      );
+      border-radius: 10px;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    .runner {
+      font-size: 5em;
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      animation: run 3s infinite alternate ease-in-out;
+    }
+
+    @keyframes run {
+      from { left: 20px; }
+      to { left: calc(100% - 80px); }
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 1.2em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Buona Fortuna</h1>
+  </header>
+
+  <div class="olympic-rings">
+    <div class="blue"></div>
+    <div class="black"></div>
+    <div class="red"></div>
+    <div class="yellow"></div>
+    <div class="green"></div>
+  </div>
+
+  <p class="message">
+    Sei on <br>FIREEE<br>🔥🔥🔥🔥</p>
+
+  <div class="track">
+    <div class="runner">🏃‍♀️</div>  </div>
+
+</body>
+</html>
