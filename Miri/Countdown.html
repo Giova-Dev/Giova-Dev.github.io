@@ -10,14 +10,21 @@
       overflow: hidden;
       font-family: 'Comic Sans MS', cursive, sans-serif;
       text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    #countdown-container {
+      position: relative;
+      z-index: 2;
     }
 
     #countdown {
-      font-size: 3em;
-      margin-top: 50px;
-      color: white;
-      z-index: 2;
-      position: relative;
+      font-size: 6em;
+      color: yellow;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     }
 
     /* Cuori rossi fluttuanti */
@@ -108,9 +115,8 @@
       font-size: 6em;
       color: yellow;
       text-shadow: 3px 3px 10px #ff0000;
-      margin-top: 100px;
       animation: pop-in 2s ease forwards;
-      z-index: 3;
+      z-index: 99;
       position: relative;
     }
 
@@ -135,7 +141,7 @@
 
     .champagne {
       position: absolute;
-      width: 100px;
+      width: 20em;
       bottom: 0;
       animation: pop 1s ease-out forwards;
       z-index: 2;
@@ -153,16 +159,152 @@
       0% { transform: translateY(100%); }
       100% { transform: translateY(0); }
     }
+
+    /* Stile per l'esplosione a cuore */
+    .heart-explosion {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 15;
+      pointer-events: none;
+    }
+
+    .explosion-heart {
+      --heart-color: #ff3366;
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background: var(--heart-color);
+      transform: rotate(45deg);
+      z-index: 15;
+    }
+
+    .explosion-heart::before,
+    .explosion-heart::after {
+      content: '';
+      width: 15px;
+      height: 15px;
+      background: var(--heart-color);
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .explosion-heart::before {
+      top: -7px;
+      left: 0;
+    }
+
+    .explosion-heart::after {
+      left: -7px;
+      top: 0;
+    }
+
+    /* Cuore pulsante */
+    .pulse-heart {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      width: 100px;
+      height: 100px;
+      background: #ff3366;
+      z-index: 10;
+      animation: heartbeat 1.5s infinite;
+      pointer-events: none;
+    }
+
+    .pulse-heart::before,
+    .pulse-heart::after {
+      content: '';
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: #ff3366;
+      border-radius: 50%;
+    }
+
+    .pulse-heart::before {
+      top: -50px;
+      left: 0;
+    }
+
+    .pulse-heart::after {
+      left: -50px;
+      top: 0;
+    }
+
+    @keyframes heartbeat {
+      0% {
+        transform: translate(-50%, -50%) rotate(45deg) scale(0.8);
+        opacity: 0.8;
+      }
+      50% {
+        transform: translate(-50%, -50%) rotate(45deg) scale(1.2);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) rotate(45deg) scale(0.8);
+        opacity: 0.8;
+      }
+    }
+
+    /* Cuori che si espandono dal centro */
+    .expanding-heart {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      width: 10px;
+      height: 10px;
+      background: rgba(255, 51, 102, 0.7);
+      z-index: 8;
+      animation: expand 3s forwards;
+      pointer-events: none;
+    }
+
+    .expanding-heart::before,
+    .expanding-heart::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: inherit;
+      border-radius: 50%;
+    }
+
+    .expanding-heart::before {
+      top: -5px;
+      left: 0;
+    }
+
+    .expanding-heart::after {
+      left: -5px;
+      top: 0;
+    }
+
+    @keyframes expand {
+      0% {
+        transform: translate(-50%, -50%) rotate(45deg) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) rotate(45deg) scale(50);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <div id="countdown">Caricamento...</div>
-  <div id="message">🎉 Buon Compleanno +19 🎉</div>
+  <div id="countdown-container">
+    <div id="countdown">Caricamento...</div>
+  </div>
+  <div id="message">Buon Compleanno<br>🎉 +19 🎉</div>
 
   <canvas class="confetti" id="confetti-canvas"></canvas>
-  <img src="https://i.imgur.com/TbyoMMP.png" class="champagne left-bottle" style="display:none;">
-  <img src="https://i.imgur.com/TbyoMMP.png" class="champagne right-bottle" style="display:none;">
+  <img src="./res/champagne_left.png" class="champagne left-bottle" style="display:none;">
+  <img src="./res/champagne_right.png"" class="champagne right-bottle" style="display:none;">
 
   <script>
     const countdownEl = document.getElementById("countdown");
@@ -170,7 +312,21 @@
     const champagneLeft = document.querySelector(".left-bottle");
     const champagneRight = document.querySelector(".right-bottle");
 
-    const targetDate = new Date(new Date().getFullYear(), 6, 11);
+    let confetti = [];
+    const canvas = document.getElementById("confetti-canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const now = new Date();
+    let targetYear = now.getFullYear();
+    const targetDate = new Date(targetYear, 6, 11);
+    
+    // Se il compleanno di quest'anno è già passato (e non è oggi), passa al prossimo anno
+    if (now > targetDate && !(now.getDate() === targetDate.getDate() && now.getMonth() === targetDate.getMonth())) {
+      targetYear++;
+      targetDate.setFullYear(targetYear);
+    }
 
     function updateCountdown() {
       const now = new Date();
@@ -225,15 +381,46 @@
       champagneRight.style.display = 'block';
       messageEl.style.display = 'block';
       startConfetti();
+      createHeartExplosion();
+      createPulseHeart();
+      startExpandingHearts();
     }
 
-    // Confetti
-    const canvas = document.getElementById("confetti-canvas");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // Cuore pulsante centrale
+    function createPulseHeart() {
+      const pulseHeart = document.createElement('div');
+      pulseHeart.classList.add('pulse-heart');
+      document.body.appendChild(pulseHeart);
+      
+      // Rimuovi dopo 10 secondi
+      setTimeout(() => {
+        pulseHeart.remove();
+      }, 10000);
+    }
 
-    let confetti = [];
+    // Cuori che si espandono dal centro
+    function startExpandingHearts() {
+      const colors = ['#ff3366', '#ff66a3', '#ff5050', '#ff9999', '#ff4d94'];
+      
+      function createExpandingHeart() {
+        const heart = document.createElement('div');
+        heart.classList.add('expanding-heart');
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        heart.style.background = color;
+        document.body.appendChild(heart);
+        
+        // Rimuovi dopo l'animazione
+        setTimeout(() => {
+          heart.remove();
+        }, 3000);
+      }
+      
+      // Crea cuori espandenti ogni 300ms per 5 secondi
+      const expandingInterval = setInterval(createExpandingHeart, 300);
+      setTimeout(() => {
+        clearInterval(expandingInterval);
+      }, 5000);
+    }
 
     function randomColor() {
       const colors = ["#ff6666", "#ffcccc", "#ffffff", "#ff0000", "#ffff00"];
@@ -286,6 +473,57 @@
           confetti[i] = createConfettiPiece();
         }
       }
+    }
+
+    // Esplosione a forma di cuore
+    function createHeartExplosion() {
+      const explosionContainer = document.createElement('div');
+      explosionContainer.classList.add('heart-explosion');
+      document.body.appendChild(explosionContainer);
+
+      const heartColors = ['#ff3366', '#ff66a3', '#ff5050', '#ff9999', '#ff4d94'];
+      const heartCount = 100;
+      const hearts = [];
+
+      // Formula per la forma del cuore
+      for (let i = 0; i < heartCount; i++) {
+        const t = (i / heartCount) * 2 * Math.PI;
+        const x = 16 * Math.pow(Math.sin(t), 3);
+        const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+        
+        const heart = document.createElement('div');
+        heart.classList.add('explosion-heart');
+        
+        const color = heartColors[Math.floor(Math.random() * heartColors.length)];
+        heart.style.setProperty('--heart-color', color);
+        
+        explosionContainer.appendChild(heart);
+        hearts.push({element: heart, x, y});
+      }
+
+      // Posiziona i cuori nella forma iniziale
+      hearts.forEach((heart, index) => {
+        heart.element.style.transform = `rotate(45deg) translate(${heart.x * 10}px, ${heart.y * 10}px)`;
+        heart.element.style.opacity = '1';
+      });
+
+      // Animazione esplosione
+      setTimeout(() => {
+        hearts.forEach(heart => {
+          const angle = Math.random() * 2 * Math.PI;
+          const distance = 100 + Math.random() * 200;
+          const duration = 2 + Math.random() * 2;
+
+          heart.element.style.transition = `all ${duration}s ease-out`;
+          heart.element.style.transform = `rotate(45deg) translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
+          heart.element.style.opacity = '0';
+        });
+
+        // Rimuovi l'esplosione dopo l'animazione
+        setTimeout(() => {
+          explosionContainer.remove();
+        }, 3000);
+      }, 100);
     }
   </script>
 </body>
