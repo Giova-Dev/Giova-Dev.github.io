@@ -1,41 +1,45 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About me</title>
     <link rel="stylesheet" href="home-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
 </head>
+
 <body>
     <div id="ideaModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2><i class="fas fa-lightbulb"></i> Condividi la tua idea con me</h2>
-            <p>Se hai un progetto interessante, una collaborazione da proporre o semplicemente un suggerimento, sarò lieto di ascoltarti.</p>
-            
+            <p>Se hai un progetto interessante, una collaborazione da proporre o semplicemente un suggerimento, sarò
+                lieto di ascoltarti.</p>
+
             <form id="ideaForm">
                 <div class="form-group">
                     <label for="name">Il tuo nome</label>
                     <input type="text" id="name" name="name" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="email">Email di contatto</label>
                     <input type="email" id="email" name="email" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="idea-title">Titolo dell'idea</label>
                     <input type="text" id="idea-title" name="idea-title" required placeholder="Titolo dell'idea">
                 </div>
-                
+
                 <div class="form-group">
                     <label for="idea-desc">Descrizione dettagliata</label>
-                    <textarea id="idea-desc" name="idea-desc" rows="5" required placeholder="Descrivi nel dettaglio la tua proposta..."></textarea>
+                    <textarea id="idea-desc" name="idea-desc" rows="5" required
+                        placeholder="Descrivi nel dettaglio la tua proposta..."></textarea>
                 </div>
-                
+
                 <button type="submit" class="btn submit-btn">Invia proposta <i class="fas fa-paper-plane"></i></button>
             </form>
         </div>
@@ -56,7 +60,7 @@
     <main>
         <section id="about" class="card">
             <h2><i class="fas fa-user"></i> Chi Sono</h2>
-            <p>Sono uno studente di Ingegneria Informatica  presso l'Università di Pisa.<br>
+            <p>Sono uno studente di Ingegneria Informatica presso l'Università di Pisa.<br>
                 Hai un'idea da <button id="ideaLink" style="
                 background: none;
                 border: none;
@@ -116,30 +120,24 @@
 
         <section id="projects" class="card">
             <h2><i class="fas fa-project-diagram"></i> Progetti</h2>
-            <p>Questa sezione è Work In Progress attualmente.</p>
-            <!--
             <p>Qui puoi trovare alcuni dei miei progetti più significativi:</p>
             <div class="project-grid">
                 <div class="project-card">
-                    <h3>Progetto 1</h3>
-                    <p>Breve descrizione del progetto e delle tecnologie utilizzate.</p>
-                    <a href="#" class="btn">Vedi progetto</a>
+                    <h3>TrackHub</h3>
+                    <p>Gestionale per organizzare studio ed impegni</p>
+                    <a href="https://github.com/Giova-Dev/trackhub" class="btn">><i class="fab fa-github"></i>Vedi repository</a>
                 </div>
-                <div class="project-card">
-                    <h3>Progetto 2</h3>
-                    <p>Breve descrizione del progetto e delle tecnologie utilizzate.</p>
-                    <a href="#" class="btn">Vedi progetto</a>
-                </div>
-                -->
             </div>
         </section>
 
         <section id="social" class="card">
             <h2><i class="fas fa-share-alt"></i> Social & Contatti</h2>
             <div class="social-links">
-                <a href="https://www.linkedin.com/in/giovanni-santini-1a5a48365/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="https://www.linkedin.com/in/giovanni-santini-1a5a48365/" target="_blank"><i
+                        class="fab fa-linkedin"></i> LinkedIn</a>
                 <a href="https://github.com/Giova-Dev" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-                <a href="https://stackoverflow.com/users/24560010/giova-dev"><i class="fab fa-stack-overflow"></i> Stackoverflow</a>
+                <a href="https://stackoverflow.com/users/24560010/giova-dev"><i class="fab fa-stack-overflow"></i>
+                    Stackoverflow</a>
             </div>
         </section>
     </main>
@@ -153,18 +151,18 @@
         const btn = document.getElementById("ideaLink");
         const span = document.getElementsByClassName("close")[0];
 
-        btn.onclick = function(e) {
+        btn.onclick = function (e) {
             e.preventDefault();
             modal.style.display = "block";
             document.body.classList.add('modal-open');
         }
 
-        span.onclick = function() {
+        span.onclick = function () {
             modal.style.display = "none";
             document.body.classList.remove('modal-open');
         }
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
                 document.body.classList.remove('modal-open');
@@ -177,7 +175,7 @@
         }
 
 
-        document.getElementById('ideaForm').addEventListener('submit', function(e) {
+        document.getElementById('ideaForm').addEventListener('submit', function (e) {
             e.preventDefault();
 
             const email = document.getElementById('email').value;
@@ -194,7 +192,7 @@
             );
             alert('Grazie per la tua proposta!');
             modal.style.display = "none";
-            
+
         });
 
         function inviaNotificaPushbullet(mail, nome, titolo, descrizione) {
@@ -213,4 +211,5 @@
         }
     </script>
 </body>
+
 </html>
