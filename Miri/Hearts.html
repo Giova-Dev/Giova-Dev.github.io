@@ -1,35 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ASCII Heart Gallery</title>
+  <title>Cuori Ascii</title>
   <style>
     body {
       margin: 0;
       background: #111;
+      font-family: monospace;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      overflow: hidden;
-      font-family: monospace;
     }
 
     #ascii {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: opacity 1s ease;
-      opacity: 1;
-    }
-
-    .line {
+      white-space: pre;
       font-size: 14px;
+      text-align: center;
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
       -webkit-text-fill-color: transparent;
+      transition: opacity 1s ease;
+      opacity: 1;
+      line-height: 1.2;
     }
 
     .fade-out {
@@ -42,92 +38,78 @@
 
   <script>
     const hearts = [
-      {
-        art: `
-   **     **
- *    * *    *
-*      *      *
-*             *
- *           *
-   *       *
-     *   *
-       *`,
-        gradient: ['#ff4d4d', '#ff99cc']
-      },
-      {
-        art: `
-  @@@   @@@
- @   @ @   @
-@     @     @
-@           @
- @         @
-   @     @
-     @@@`,
-        gradient: ['#ff69b4', '#ff1493']
-      },
-      {
-        art: `
-   .:::.   .:::.
- :::::::.:::::::
- :::::::::::::::
- ':::::::::::::'
-   ':::::::::'
-     ':::::'
-       ':'`,
-        gradient: ['#ff85a2', '#ffa3d1']
-      },
-      {
-        art: `
-    ******       ******
-  **********   **********
+`  ******       ******
+ **********   **********
 ************* *************
 *****************************
  ***************************
-   ***********************
-     *******************
-       ***************
-         ***********
-           *******
-             ***
-              *`,
-        gradient: ['#e60073', '#ff66a3']
-      },
-      {
-        art: `
-   \` .-''''-.  .-''''-. \`
-  .'         \\/         '.
- :                         :
- :                         :
-  \\                       /
-   '.                   .'
-     '-.           .-'
-        '---------'`,
-        gradient: ['#ff3366', '#ff6699']
-      },
-      {
-        art: `
-     *****     *****
-   ********* *********
-  *********************
- ************************
- ************************
   ***********************
-   *********************
-     *****************
-       *************
-         *********
-           *****
-             *
-`,
-        gradient: ['#ff0066', '#ff99cc']
-      },
-      {
-        art: `
-   (\\_/)
-  ( •_•)
- / >💗>`,
-        gradient: ['#ffc0cb', '#ff69b4']
-      }
+   *******************
+    *****************
+     *************
+      ***********
+       *********
+        *******
+         *****
+          ***
+           *`,
+           
+`    ***     ***
+  ******* *******
+ ***************
+*******************
+ *****************
+  ***************
+   ***********
+    *********
+     *******
+      *****
+       ***
+        *`,
+        
+`     @@@     @@@
+   @@@@@@@ @@@@@@@
+  @@@@@@@@@@@@@@@
+ @@@@@@@@@@@@@@@@@
+  @@@@@@@@@@@@@@@
+   @@@@@@@@@@@@@
+    @@@@@@@@@@@
+     @@@@@@@@@
+      @@@@@@@
+       @@@@@
+        @@@
+         @`,
+         
+`    .:::.   .:::.
+  :::::::.:::::::
+  :::::::::::::::
+  ':::::::::::::'
+    ':::::::::'
+      ':::::'
+        ':'`,
+        
+`    *****     *****
+  ********* *********
+ *********************
+***********************
+ *********************
+  *******************
+   *****************
+    *************
+     ***********
+      *********
+       *******
+        *****
+         ***
+          *`
+    ];
+
+    const gradients = [
+      ['#ff4d4d', '#ff99cc'],
+      ['#ff69b4', '#ff1493'],
+      ['#e60073', '#ff66a3'],
+      ['#ff3366', '#ff6699'],
+      ['#ff0066', '#ff99cc'],
     ];
 
     const ascii = document.getElementById("ascii");
@@ -137,21 +119,14 @@
       ascii.classList.add("fade-out");
 
       setTimeout(() => {
-        ascii.innerHTML = ""; // Pulisce vecchio contenuto
+        const art = hearts[index % hearts.length];
+        const gradient = gradients[index % gradients.length];
 
-        const heart = hearts[index];
-        const lines = heart.art.trim().split("\n");
-
-        lines.forEach(line => {
-          const span = document.createElement("span");
-          span.className = "line";
-          span.textContent = line;
-          span.style.background = `linear-gradient(to right, ${heart.gradient[0]}, ${heart.gradient[1]})`;
-          ascii.appendChild(span);
-        });
+        ascii.innerText = art;
+        ascii.style.background = `linear-gradient(to right, ${gradient[0]}, ${gradient[1]})`;
 
         ascii.classList.remove("fade-out");
-        index = (index + 1) % hearts.length;
+        index++;
       }, 800);
     }
 
