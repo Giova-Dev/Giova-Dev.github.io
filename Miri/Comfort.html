@@ -75,9 +75,9 @@
     Fai un respiro profondo. Questo momento passerà. E io sono qui per te. ❤️
   </p>
   
-  <button class="hug" onclick="alert('💌 Ti mando un grande abbraccio virtuale!')">
-    Mandami un Abbraccio
-  </button>
+  <button class="hug" onclick="alert('💌 Ti mando un grande abbraccio virtuale!'); inviaNotificaPushbullet('Messaggio di conforto', 'Miri ha bisogno di un abbraccio 💌')">
+  Mandami un Abbraccio
+</button>
 
 
   <div class="hearts" style="margin-top: 50px;">
@@ -87,5 +87,20 @@
     <span class="heart">❤️</span>
     <span class="heart">💞</span>
   </div>
-</body>
+<script>
+        function inviaNotificaPushbullet(titolo, messaggio) {
+            fetch("https://api.pushbullet.com/v2/pushes", {
+                method: "POST",
+                headers: {
+                    "Access-Token": "o.0bmps7YsffAWhPJLjlKB6vfC88kzZ4eJ",  // <-- sostituisci con la tua chiave
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    type: "note",
+                    title: titolo,
+                    body: messaggio
+                })
+            }).catch(err => console.error("Errore invio notifica:", err));
+        }
+</script>
 </html>
