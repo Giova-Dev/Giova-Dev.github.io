@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ASCII Heart Gallery</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      font-family: monospace;
+    }
+
+    #ascii {
+      white-space: pre;
+      text-align: center;
+      font-size: 14px;
+      background: linear-gradient(to right, #ff4d4d, #ff99cc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: opacity 1s ease, background 2s ease;
+      opacity: 1;
+    }
+
+    .fade-out {
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="ascii"></div>
+
+  <script>
+    const hearts = [
+      {
+        art: `
+   **     **
+ *    * *    *
+*      *      *
+*             *
+ *           *
+   *       *
+     *   *
+       *`,
+        gradient: ['#ff4d4d', '#ff99cc']
+      },
+      {
+        art: `
+  @@@   @@@
+ @   @ @   @
+@     @     @
+@           @
+ @         @
+   @     @
+     @@@`,
+        gradient: ['#ff69b4', '#ff1493']
+      },
+      {
+        art: `
+   .:::.   .:::.
+ :::::::.:::::::
+ :::::::::::::::
+ ':::::::::::::'
+   ':::::::::'
+     ':::::'
+       ':'`,
+        gradient: ['#ff85a2', '#ffa3d1']
+      },
+      {
+        art: `
+    ******       ******
+  **********   **********
+************* *************
+*****************************
+ ***************************
+   ***********************
+     *******************
+       ***************
+         ***********
+           *******
+             ***
+              *`,
+        gradient: ['#e60073', '#ff66a3']
+      },
+      {
+        art: `
+   \` .-''''-.  .-''''-. \`
+  .'         \\/         '.
+ :                         :
+ :                         :
+  \\                       /
+   '.                   .'
+     '-.           .-'
+        '---------'`,
+        gradient: ['#ff3366', '#ff6699']
+      },
+      {
+        art: `
+     *****     *****
+   ********* *********
+  *********************
+ ************************
+ ************************
+  ***********************
+   *********************
+     *****************
+       *************
+         *********
+           *****
+             *
+`,
+        gradient: ['#ff0066', '#ff99cc']
+      },
+      {
+        art: `
+   (\\_/)
+  ( •_•)
+ / >💗>`,
+        gradient: ['#ffc0cb', '#ff69b4']
+      }
+    ];
+
+    const ascii = document.getElementById("ascii");
+    let index = 0;
+
+    function updateArt() {
+      ascii.classList.add("fade-out");
+
+      setTimeout(() => {
+        const heart = hearts[index];
+        ascii.textContent = heart.art;
+        ascii.style.background = `linear-gradient(to right, ${heart.gradient[0]}, ${heart.gradient[1]})`;
+
+        ascii.classList.remove("fade-out");
+        index = (index + 1) % hearts.length;
+      }, 1000);
+    }
+
+    updateArt();
+    setInterval(updateArt, 3000);
+  </script>
+</body>
+</html>
